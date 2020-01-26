@@ -25,22 +25,14 @@ h1, h2, h3, h4 {
   font-family: fantasy;
 }
 h1 {
-  background: -webkit-linear-gradient(#ffed00, #ffc805);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #FF0000;
 }
-h2, h3, h4 {
-  color: white;
-}
+
 body {
-  background: black;
+  background: white;
   color: #6a7480;
   font-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;
   font-size:20px;
-}
-
-label {
-  color: white;
 }
 
 input[type=text] {
@@ -107,8 +99,7 @@ input:focus {
   color: white;
 	background-image: linear-gradient(to bottom right, #57df7b, #47bf67);
 }
+
 a {
-  font-family: fantasy;
-  display: block;
-  font-size: 22;
+
 }
