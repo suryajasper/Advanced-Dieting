@@ -15,7 +15,7 @@ function getInfo(rawItem) {
 
   xhr.addEventListener("readystatechange", function () {
   	if (this.readyState === this.DONE) {
-  		console.log(this.responseText);
+  		return this.responseText;
   	}
   });
 
