@@ -1,5 +1,6 @@
 var parent = document.getElementById("stuff");
 var foodDict = {};
+var eatHistory = [];
 
 var itemIn = document.getElementById("itemIn");
 var searchButton = document.getElementById("searchButton");
@@ -47,6 +48,13 @@ function createButton(item_name, item) {
   var image = document.createElement("IMG");
   image.src = foodDict[item_name].img;
   parent.appendChild( image , button.nextSibling );
+
+  var eatButton = document.createElement('button');
+  var eatText = document.createTextNode("eat");
+
+  eatButton.onclick = function() {
+
+  }
 
   button.onclick = function() {
     var fid = foodDict[item_name];
