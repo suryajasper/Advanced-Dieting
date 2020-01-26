@@ -1,0 +1,43 @@
+<html>
+<head>
+  <title>Advanced Dieting</title>
+  <meta charset = "utf-8"></meta>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+</head>
+<link rel="stylesheet" href="main.css">
+<body>
+  <h1>Please choose what best describes you</h1>
+  <h2>Choose from preset diseases</h2>
+  <select id = "preset">
+    <option value="diabetic">Diabeties</option>
+    <option value="cancer">Cancer Patient</option>
+  </select>
+  <fieldset id = "reduce">
+    <legend>
+      <h2>What do you want to reduce?</h2>
+    </legend>
+    <input type="checkbox" id="carbs" name="carbs">
+    <label for="carbs">Carbs</label>
+    <input type="checkbox" id="sodium" name="sodium">
+    <label for="sodium">Sodium</label>
+    <input type="checkbox" id="sugar" name="sugar">
+    <label for="sugar">Sugar</label>
+  </fieldset>
+  <fieldset id = "gain">
+    <legend>
+      <h2>What do you want to gain?</h2>
+    </legend>
+    <input type="checkbox" id="vA" name="vA">
+    <label for="vA">Vitamin A</label>
+    <input type="checkbox" id="vB" name="vB">
+    <label for="vB">Vitamin B</label>
+    <input type="checkbox" id="vC" name="vC">
+    <label for="vC">Vitamin C</label>
+    <input type="checkbox" id="vD" name="vD">
+    <label for="vD">Vitamin D</label>
+  </fieldset>
+  <br>
+  <a class="glass" id = "submitButton">Submit</a>
+  <script src="healthDataInput.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+h1, h2, h3, h4 {
+  font-family: fantasy;
+}
+h1 {
+  background: -webkit-linear-gradient(#ffed00, #ffc805);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+h2, h3, h4 {
+  color: white;
+}
+body {
+  -webkit-animation: bodyAnim 25s ease infinite;
+  background: linear-gradient(270deg, #000000, #230073);
+}
+@-webkit-keyframes bodyAnim
+{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+label {
+  color: white;
+}
+.glass
+{
+  margin: 10;
+  background-image: linear-gradient(to bottom right, #7ec200, #359e00);
+  border: none;
+  color: white;
+  padding: 7px 16px;
+  border-radius: 3px;
+  box-shadow: 0px 1px 4px -2px #333;
+  text-shadow: 0px -1px #333;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+.glass:hover
+{
+  cursor: pointer;
+  color: white;
+	background-image: linear-gradient(to bottom right, #57df7b, #47bf67);
+}
