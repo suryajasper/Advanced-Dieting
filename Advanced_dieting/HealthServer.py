@@ -25,7 +25,7 @@ def login():
    else:
       return render_template(LOGIN)
 
-app.route('/index.html')
+app.route('/index')
 def mainBlob():
    return render_template(INDEX)
 
