@@ -66,3 +66,5 @@ function getFromServer() {
     }
   };
 }
+
+getFromServer();
