@@ -6,6 +6,7 @@ var fruits = ['acerola', 'apple', 'apricot', 'avocado', 'banana', 'blackberry', 
 
 var itemIn = document.getElementById("itemIn");
 var searchButton = document.getElementById("searchButton");
+
 searchButton.onclick = function() {
   searchFor(itemIn.value);
 }
@@ -30,11 +31,13 @@ function sendToServer(item) {
 }
 
 function searchFor(food) {
+  var json = getInfo(food, true);
+  /*
   if (food === "fruits") {
     for (var i = 0; i < fruits.length; i++) {
       var json = getInfo(fruits[i], true);
     }
-  }
+  }*/
 }
 function addToDictionary(food) {
   tempFood = new Food(food["food_name"]);
