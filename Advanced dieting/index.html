@@ -1,11 +1,37 @@
 <html>
-<head>
-  <title>Advanced Dieting</title>
-  <meta charset = "utf-8"></meta>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-</head>
-<link rel="stylesheet" href="main.css">
-<body>
-  
-</body>
+  <head>
+    <title>Advanced Dieting</title>
+    <meta charset = "utf-8"></meta>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+  </head>
+  <link rel="stylesheet" href="main.css">
+  <body>
+    <div class = "center">
+      <table>
+        <tbody>
+          <tr id = "food_groups">
+            <td>
+              <a class="glass" onclick = "searchFor('fruits')">Fruits</a>
+            </td>
+            <td>
+              <a class="glass" onclick = "searchFor('vegetables')">Vegetables</a>
+            </td>
+            <td>
+              <a class="glass" onclick = "searchFor('grains')">Grains</a>
+            </td>
+            <td>
+              <a class="glass" onclick = "searchFor('dairy')">Milk/Dairy</a>
+            </td>
+            <td>
+              <a class="glass" onclick = "searchFor('meat/beans')">Meat/Beans</a>
+            </td>
+          </tr>
+        </tbody>
+        <div id = "stuff">
+          
+        </div>
+      </table>
+    </div>
+    <script src = "nutrition.js"></script>
+  </body>
 </html>
