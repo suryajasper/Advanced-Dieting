@@ -14,8 +14,8 @@ async function getInfo(rawItem, debugMode) {
   var xhttp = new XMLHttpRequest();
   xhttp.open("POST", "https://trackapi.nutritionix.com/v2/natural/nutrients", true);
   xhttp.setRequestHeader("Content-type", "application/json");
-  xhttp.setRequestHeader("x-app-id", "0f5b2979");
-  xhttp.setRequestHeader("x-app-key", "4f56f9a75a02379481cd2cfc7e025527");
+  xhttp.setRequestHeader("x-app-id", "48455876");
+  xhttp.setRequestHeader("x-app-key", "060a6724c37307eaf9836fbd94ea6195");
   xhttp.setRequestHeader("x-remote-user-id", "0");
   xhttp.onreadystatechange = function() {
     if (xhttp.readyState>3 && xhttp.status==200) { searched(xhttp.responseText); }
@@ -30,7 +30,11 @@ function sendToServer(item) {
 }
 
 function searchFor(food) {
-  var json = getInfo(food, true);
+  if (food === "fruits") {
+    for (var i = 0; i < fruits.length; i++) {
+      var json = getInfo(fruits[i], true);
+    }
+  }
 }
 function addToDictionary(food) {
   tempFood = new Food(food["food_name"]);
@@ -79,6 +83,10 @@ function createButton(item_name, item) {
       button.parentNode.insertBefore(h4, button.nextSibling);
     }
   }
+
+  var br = document.createElement("br");
+  //parent.appendChild( br , button.nextSibling );
+
   return button;
 }
 function eraseResults() {
