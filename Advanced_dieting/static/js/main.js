@@ -3,6 +3,9 @@ var foodDict = {};
 var eatHistory = [];
 var vegetables = "amaranth leaves/arrowroot/artichoke/arugula/asparagus/bamboo shoots/green beans/beets/belgian endive/bitter melon/bok choy/broadbeans/broccoli/broccoli rabe/brussel sprouts/green cabbage/red cabbage/carrot/cassava/cauliflower/celeriac/celery/chayote/chicory/collards/corn/crookneck/cucumber/daikon/dandelion greens/eggplant/fennel/fiddleheads/ginger root/horseradish/jicama/kale/kohlrabi/leeks/iceberg lettuce/leaf lettuce/mushrooms/mustard greens/okra/onion/parsnip/peas/pepper/potato/pumpkin/radicchio/radishes/rutabaga/salsify/shallots/snow peas/sorrel/spaghetti squash/spinach/squash/sugar snap peas/sweat potato/swiss chard/tomatillo/tomato/turnip/watercress/yam root/zucchini";
 var fruits = "acerola/apple/apricot/avocado/banana/blackberry/blackcurrant/blueberry/breadfruit/cantaloupe/carambola/cherimoya/cherry/clementine/coconut/cranberry/custard-apple/date/durian/elderberry/feijoa/figs/gooseberry/grapefruit/grape/guava/honeydew melon/jackfruit/java plum/jujube fruit/kiwi/kumquat/lemon/longan/loquat/lychee/mandarin/mango/mangosteen/mulberry/nectarine/olive/orange/papaya/passion fruit/peaches/pear/persimmon/pitaya/pineapple/pitanga/plantain/plum/pomegranate/prickly pear/prune/pummelo/quince/raspberry/rhubarb/rose apple/sapodilla/sapote/soursop/strawberry/sugar apple/tamarind/tangerine/watermelon";
+var dairy = "Baked Milk/Bulgarian Yogurt/Butter/Buttermilk/Camel Milk/Cheese/Cornish Clotted Cream/Condensed Milk/Cottage Cheese/Cream/Cream Cheese/Curd/Custard/Evaporated Milk/Frozen Custard/Frozen Yoghurt/Gelato/Goat's Milk/Horse Milk/Ice Cream/Ice Milk/Kefir/Khoa/Kulfi/Kumiss/Lassi/Milk/Moose Milk/Paneer/Pomazankove Maslo/Powdered Milk/Processed Cheese/Reindeer Milk/Ryazhenka/Semifreddo/Sheep's Milk Yogurt/Soft Serve/Sour Cream/Strained Yogurt/Whipped Cream/Yogurt";
+var grain = "Amaranth/Barley/Brown Rice/Brown Rice Bread/Brown Rice Tortilla/Buckwheat/Cracked Wheat/Farro/Flaxseed/Millet/Oats/Oat Bread/Oat Cereal/Oatmeal/Popcorn/Whole Wheat Cereal Flakes/Muesli/Rolled Oats/Quinoa/Rye/Sorghum/Spelt/Teff/Triticale/Whole Grain Barley/Wheat Berries/Whole Grain Cornmeal/Whole Rye/Whole Wheat Bread/Whole Wheat Couscous/Whole Wheat Crackers/Whole Wheat Pasta/Whole Wheat Pita Bread/Whole Wheat Sandwich Buns And Rolls/Whole Wheat Tortillas/Wild Rice/Cornbread/Corn Tortillas/Couscous/Crackers/Flour Tortillas/Grits/Noodles/Spaghetti/Macaroni";
+var meats = "Anchovy/Bacon/Beef/Buffalo/Caribou/Catfish/Chicken/Clams/Cod/Cornish Game Hen/Crab/Duck/Eel/Emu/Goat/Goose/Grouse/Halibut/Ham/Kangaroo/Lamb/Lobster/Mackerel/Mahi Mahi/Octopus/Ostrich/Oysters/Pheasant/Pork/Quail/Rabbit/Salmon/Sardines/Scallops/Shark/Shrimp/Snake/Squab/Squid/Swordfish/Tilapia/Tuna/Turkey/Veal/Venison/Anasazi Beans/Black Beans/Black-Eyed Peas/Butter Beans/Cannellini Beans/Flageolet Beans/Garbanzo Beans/Chickpeas/Desi/Bengal Gram/Chana Dal/Great Northern Beans/Kidney Beans/Lentils/Lupini Beans/Marrow Beans/Moth Beans/Mung Beans/Navy Beans/Pigeon Pea/Pink Beans/Pinto Beans/Rice Beans/Scarlet Runner Beans/Soybean/Soya Bean/Spanish Tolosana Beans/Split Peas";
 
 var itemIn = document.getElementById("itemIn");
 var searchButton = document.getElementById("searchButton");
@@ -19,7 +22,9 @@ async function getInfo(rawItem, debugMode) {
   xhttp.setRequestHeader("x-app-key", "060a6724c37307eaf9836fbd94ea6195");
   xhttp.setRequestHeader("x-remote-user-id", "0");
   xhttp.onreadystatechange = function() {
-    if (xhttp.readyState>3 && xhttp.status==200) { searched(xhttp.responseText); }
+    if (xhttp.readyState>3 && xhttp.status==200) {
+      searched(xhttp.responseText);
+    }
   };
   xhttp.send('{"query":"'+rawItem+'","timezone": "US/Western"}');
 }
@@ -30,13 +35,38 @@ function sendToServer(item) {
   xhttp.send(JSON.stringify(item));
 }
 
+function getFromServer() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("GET", "/userPreferences", true);
+  xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState>3 && xhttp.status==200) {
+      var json = JSON.parse(xhttp.responseText);
+      var toLose = json[1];
+      var toGain = json[2];
+
+    }
+  };
+}
+
 function searchFor(food) {
-  var json = getInfo(food, true);
   if (food === "fruits") {
     var json = getInfo(fruits, true);
   }
-  if (food === "vegetables") {
+  else if (food === "vegetables") {
     var json = getInfo(vegetables, true);
+  }
+  else if (food === "dairy") {
+    var json = getInfo(dairy, true);
+  }
+  else if (food === "grains") {
+    var json = getInfo(grain, true);
+  }
+  else if (food === "meat/beans") {
+    var json = getInfo(meats, true);
+  }
+  else {
+    var json = getInfo(food, true);
   }
 }
 function addToDictionary(food) {
@@ -103,10 +133,12 @@ function searched(json) {
     console.log(json);
     for (var i = 0; i < json["foods"].length; i++) {
       var item_name = json["foods"][i]["food_name"];
-      addToDictionary(json["foods"][i]);
-      parent.appendChild(createButton(item_name));
-      var br = document.createElement('br');
-      parent.appendChild( br );
+      if (json["foods"][i]["photo"]["highres"] != undefined) {
+        addToDictionary(json["foods"][i]);
+        parent.appendChild(createButton(item_name));
+        var br = document.createElement('br');
+        parent.appendChild( br );
+      }
     }
     console.log(foodDict);
   }
