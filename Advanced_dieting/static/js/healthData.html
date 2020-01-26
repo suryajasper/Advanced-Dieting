@@ -1,0 +1,55 @@
+<html>
+<head>
+  <title>Advanced Dieting</title>
+  <meta charset = "utf-8"></meta>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+</head>
+<link rel="stylesheet" href="../static/css/main.css">
+<body>
+  <div class="center-outside">
+    <div class="center-div">
+      <form action="/userPreferences" method="post">
+        <h4>Please choose what best describes you</h4><br>
+        Choose from preset diseases<br>
+        <select name="disease" autocomplete="off" required>
+          <option value="None">None</option>
+          <option value="Diabeties">Diabeties</option>
+          <option value="Cancer">Cancer</option>
+        </select><br><br>
+        What do you want to reduce?<br>
+        <select name="macro" autocomplete="off" size="3" multiple>
+          <option value="C">Carbohydrates</option>
+          <option value="S">Sodium</option>
+          <option value="F">Fat</option>
+        </select><br>
+        What do you want to increase?<br>
+        <select name="vitamin" autocomplete="off" multiple>
+          <option value="vA">Vitamin A</option>
+          <option value="vB">Vitamin B</option>
+          <option value="vC">Vitamin C</option>
+          <option value="vD">Vitamin D</option>
+        </select>
+        <br><br>
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+  </div>
+  <script>
+    window.onmousedown = function (e) {
+      var el = e.target;
+      if (el.tagName.toLowerCase() == 'option' && el.parentNode.hasAttribute('multiple')) {
+          e.preventDefault();
+
+          // toggle selection
+          if (el.hasAttribute('selected')) el.removeAttribute('selected');
+          else el.setAttribute('selected', '');
+
+          // hack to correct buggy behavior
+          var select = el.parentNode.cloneNode(true);
+          el.parentNode.parentNode.replaceChild(select, el.parentNode);
+      }
+    }
+  </script>
+  <script src="../static/js/healthDataInput.js"></script>
+</body>
+</html>
