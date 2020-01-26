@@ -1,6 +1,12 @@
 var parent = document.getElementById("stuff");
 var foodDict = {};
 
+var itemIn = document.getElementById("itemIn");
+var searchButton = document.getElementById("searchButton");
+searchButton.onclick = function() {
+  searchFor(itemIn.value);
+}
+
 async function getInfo(rawItem, debugMode) {
   var xhttp = new XMLHttpRequest();
   xhttp.open("POST", "https://trackapi.nutritionix.com/v2/natural/nutrients", true);
@@ -14,8 +20,8 @@ async function getInfo(rawItem, debugMode) {
   xhttp.send('{"query":"'+rawItem+'","timezone": "US/Eastern"}');
 }
 
-function searchFor(foodGroup) {
-  var json = getInfo(foodGroup, true);
+function searchFor(food) {
+  var json = getInfo(food, true);
 }
 function addToDictionary(food) {
   tempFood = new Food(food["food_name"]);
@@ -37,11 +43,22 @@ function createButton(item_name, item) {
   var button = document.createElement('button');
   var link = document.createTextNode(item_name);
   button.appendChild(link);
+
+  var image = document.createElement("IMG");
+  image.src = foodDict[item_name].img;
+  parent.appendChild( image , button.nextSibling );
+
   button.onclick = function() {
-    console.log("HEY");
-    var image = document.createElement("IMG");
-    image.src = foodDict[item_name].img;
-    document.body.appendChild(image);
+    var fid = foodDict[item_name];
+
+    var namesOfVars = ["calories", "cholesterol", "dietary fibers", "potassium", "protein", "saturated fat", "sodium", "sugar", "carb", "total fat"];
+    var thingsToAdd = [fid.cal, fid.cholesterol, fid.dietaryfiber, fid.potassium, fid.protein, fid.satFat, fid.sodium, fid.sugar, fid.carb, fid.fat, fid.servingQty];
+
+    for (var i = 0; i < namesOfVars.length; i++) {
+      var h4 = document.createElement("h4");
+      h4.innerHTML = (namesOfVars[i] + ": " + thingsToAdd[i].toString() + "g");
+      button.parentNode.insertBefore(h4, button.nextSibling);
+    }
   }
   return button;
 }
