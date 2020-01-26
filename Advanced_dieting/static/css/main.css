@@ -4,6 +4,21 @@
   display: inline-block;
 }
 
+img
+{
+  max-width: 150px;
+  max-height: 150px;
+  display: inline-block;
+}
+
+h1, h2, h3, h4 {
+  font-family: fantasy;
+}
+
+.tab-2{
+	display:inline-block; width:TWO-TAB-WIDTH;
+}
+
 .center-outside {
   text-align: center;
 }
@@ -15,21 +30,9 @@
   border-radius:4px;
   margin-top: 100px;
 }
-img
-{
-  max-width: 150px;
-  max-height: 150px;
-  display: inline-block;
-}
-h1, h2, h3, h4 {
-  font-family: fantasy;
-}
+
 h1 {
   color: #FF0000;
-}
-
-.tab-2{
-	display:inline-block; width:TWO-TAB-WIDTH;
 }
 
 body {
@@ -48,6 +51,22 @@ input[type=text] {
 }
 
 input[type=submit] {
+  background-color:#e3e5e8;
+  border: 2px solid #e3e5e8;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-size:14px;
+}
+
+button {
+  background-color:#e3e5e8;
+  border: 2px solid #e3e5e8;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-size:14px;
+}
+
+input[type=button] {
   background-color:#e3e5e8;
   border: 2px solid #e3e5e8;
   border-radius: 4px;
@@ -82,6 +101,18 @@ input:focus {
   outline: none;
 }
 
+select {
+  background-color:#e3e5e8;
+  border: 2px solid #e3e5e8;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-size:14px;
+}
+
+select:focus {
+  outline: none;
+}
+
 .glass
 {
   margin: 10;
@@ -102,8 +133,4 @@ input:focus {
   cursor: pointer;
   color: white;
 	background-image: linear-gradient(to bottom right, #57df7b, #47bf67);
-}
-
-a {
-
 }
