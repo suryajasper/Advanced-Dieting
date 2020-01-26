@@ -8,22 +8,22 @@
       <div class="center-div">
         <form action="/signup" method="post">
           Username<br>
-          <input type="text" name="user"><br>
+          <input type="text" name="user" autocomplete="off" required><br>
           Password<br>
-          <input type="password" name="pass"><br>
+          <input type="password" name="pass" autocomplete="off" pattern=".{6,}" placeholder="Must be 6+ characters" required><br>
           Gender<br>
-          <select name="gender">
+          <select name="gender" autocomplete="off" required>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="male">Other</option>
           </select>
           <br>
           Weight<br>
-          <input type="text" name="weight"><br>
+          <input type="text" name="weight" autocomplete="off" pattern="/^\d+$/" required><br>
           Height<br>
-          <input type="text" name="height"><br>
+          <input type="text" name="height" autocomplete="off" pattern="/^\d+$/" required><br>
           Age<br>
-          <input type="text" name="age">
+          <input type="text" name="age" autocomplete="off" pattern="/^\d+$/" required>
           <br><br>
           <input type="submit" value="Submit">
         </form>
