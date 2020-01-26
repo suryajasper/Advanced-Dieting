@@ -18,7 +18,13 @@ async function getInfo(rawItem, debugMode) {
   xhttp.onreadystatechange = function() {
     if (xhttp.readyState>3 && xhttp.status==200) { searched(xhttp.responseText); }
   };
-  xhttp.send('{"query":"'+rawItem+'","timezone": "US/Eastern"}');
+  xhttp.send('{"query":"'+rawItem+'","timezone": "US/Western"}');
+}
+
+function sendToServer(item) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("POST", "/eatHistory", true);
+  xhttp.send(JSON.stringify(item));
 }
 
 function searchFor(food) {
@@ -42,7 +48,7 @@ function addToDictionary(food) {
 }
 function createButton(item_name, item) {
   var button = document.createElement('button');
-  var link = document.createTextNode(item_name);
+  var link = document.createTextNode(item_name + " details");
   button.appendChild(link);
 
   var image = document.createElement("IMG");
@@ -50,11 +56,14 @@ function createButton(item_name, item) {
   parent.appendChild( image , button.nextSibling );
 
   var eatButton = document.createElement('button');
-  var eatText = document.createTextNode("eat");
+  var eatText = document.createTextNode("eat " + item_name);
+  eatButton.appendChild(eatText);
 
   eatButton.onclick = function() {
-
+    eatHistory.push(foodDict[item_name]);
+    sendToServer(foodDict[item_name]);
   }
+  parent.appendChild( eatButton , button.nextSibling );
 
   button.onclick = function() {
     var fid = foodDict[item_name];
