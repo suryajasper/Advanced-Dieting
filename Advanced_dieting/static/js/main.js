@@ -32,15 +32,40 @@ function searchFor(foodGroup) {
   var json = getInfo(foodGroup, true);
 }
 
+var search;
+function loadImage(keyword, output) {
+  search = new google.search.ImageSearch();
+  search.setSearchCompleteCallback(this, function() {searchComplete(output)}, null);
+  search.execute(keyword);
+}
+function searchComplete(output) {
+  if (search.results && search.results.length > 0) {
+    output.src = "url('" + search.results[0]['url'] + "')";
+  }
+}
+
+function createButton(item_name) {
+  var a = document.createElement('a');
+  var link = document.createTextNode(item_name);
+  a.appendChild(link);
+  a.title = item_name;
+  a.href = "/#";
+  return a;
+}
+function eraseResults() {
+  for (var i = 0; i < parent.children.length; i++) {
+    parent.removeChild(parent.childNodes[0]);
+  }
+}
+
 function searched(json) {
   if (json != undefined) {
+    eraseResults();
     json = JSON.parse(json);
     console.log(json);
     for (var i = 0; i < json["hits"].length; i++) {
       var item_name = json["hits"][i]["fields"]["item_name"];
-      var item = document.createElement("h4");
-      item.innerHTML = item_name;
-
+      parent.appendChild(createButton(item_name));
     }
   }
 }

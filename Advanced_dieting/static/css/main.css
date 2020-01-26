@@ -46,3 +46,8 @@ label {
   color: white;
 	background-image: linear-gradient(to bottom right, #57df7b, #47bf67);
 }
+a {
+  font-family: fantasy;
+  display: block;
+  font-size: 22;
+}
