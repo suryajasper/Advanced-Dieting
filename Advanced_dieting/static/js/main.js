@@ -1,8 +1,8 @@
 var parent = document.getElementById("stuff");
 var foodDict = {};
 var eatHistory = [];
-var vegetables = ['amaranth leaves', 'arrowroot', 'artichoke', 'arugula', 'asparagus', 'bamboo shoots', 'green beans', 'beets', 'belgian endive', 'bitter melon', 'bok choy', 'broadbeans', 'broccoli', 'broccoli rabe', 'brussel sprouts', 'green cabbage', 'red cabbage', 'carrot', 'cassava', 'cauliflower', 'celeriac', 'celery', 'chayote', 'chicory', 'collards', 'corn', 'crookneck', 'cucumber', 'daikon', 'dandelion greens', 'eggplant', 'fennel', 'fiddleheads', 'ginger root', 'horseradish', 'jicama', 'kale', 'kohlrabi', 'leeks', 'iceberg lettuce', 'leaf lettuce', 'mushrooms', 'mustard greens', 'okra', 'onion', 'parsnip', 'peas', 'pepper', 'potato', 'pumpkin', 'radicchio', 'radishes', 'rutabaga', 'salsify', 'shallots', 'snow peas', 'sorrel', 'spaghetti squash', 'spinach', 'squash', 'sugar snap peas', 'sweat potato', 'swiss chard', 'tomatillo', 'tomato', 'turnip', 'watercress', 'yam root', 'zucchini'];
-var fruits = ['acerola', 'apple', 'apricot', 'avocado', 'banana', 'blackberry', 'blackcurrant', 'blueberry', 'breadfruit', 'cantaloupe', 'carambola', 'cherimoya', 'cherry', 'clementine', 'coconut', 'cranberry', 'custard-apple', 'date', 'durian', 'elderberry', 'feijoa', 'figs', 'gooseberry', 'grapefruit', 'grape', 'guava', 'honeydew melon', 'jackfruit', 'java plum', 'jujube fruit', 'kiwi', 'kumquat', 'lemon', 'longan', 'loquat', 'lychee', 'mandarin', 'mango', 'mangosteen', 'mulberry', 'nectarine', 'olive', 'orange', 'papaya', 'passion fruit', 'peaches', 'pear', 'persimmon', 'pitaya', 'pineapple', 'pitanga', 'plantain', 'plum', 'pomegranate', 'prickly pear', 'prune', 'pummelo', 'quince', 'raspberry', 'rhubarb', 'rose apple', 'sapodilla', 'sapote', 'soursop', 'strawberry', 'sugar apple', 'tamarind', 'tangerine', 'watermelon'];
+var vegetables = "amaranth leaves/arrowroot/artichoke/arugula/asparagus/bamboo shoots/green beans/beets/belgian endive/bitter melon/bok choy/broadbeans/broccoli/broccoli rabe/brussel sprouts/green cabbage/red cabbage/carrot/cassava/cauliflower/celeriac/celery/chayote/chicory/collards/corn/crookneck/cucumber/daikon/dandelion greens/eggplant/fennel/fiddleheads/ginger root/horseradish/jicama/kale/kohlrabi/leeks/iceberg lettuce/leaf lettuce/mushrooms/mustard greens/okra/onion/parsnip/peas/pepper/potato/pumpkin/radicchio/radishes/rutabaga/salsify/shallots/snow peas/sorrel/spaghetti squash/spinach/squash/sugar snap peas/sweat potato/swiss chard/tomatillo/tomato/turnip/watercress/yam root/zucchini";
+var fruits = "acerola/apple/apricot/avocado/banana/blackberry/blackcurrant/blueberry/breadfruit/cantaloupe/carambola/cherimoya/cherry/clementine/coconut/cranberry/custard-apple/date/durian/elderberry/feijoa/figs/gooseberry/grapefruit/grape/guava/honeydew melon/jackfruit/java plum/jujube fruit/kiwi/kumquat/lemon/longan/loquat/lychee/mandarin/mango/mangosteen/mulberry/nectarine/olive/orange/papaya/passion fruit/peaches/pear/persimmon/pitaya/pineapple/pitanga/plantain/plum/pomegranate/prickly pear/prune/pummelo/quince/raspberry/rhubarb/rose apple/sapodilla/sapote/soursop/strawberry/sugar apple/tamarind/tangerine/watermelon";
 
 var itemIn = document.getElementById("itemIn");
 var searchButton = document.getElementById("searchButton");
@@ -32,12 +32,12 @@ function sendToServer(item) {
 
 function searchFor(food) {
   var json = getInfo(food, true);
-  /*
   if (food === "fruits") {
-    for (var i = 0; i < fruits.length; i++) {
-      var json = getInfo(fruits[i], true);
-    }
-  }*/
+    var json = getInfo(fruits, true);
+  }
+  if (food === "vegetables") {
+    var json = getInfo(vegetables, true);
+  }
 }
 function addToDictionary(food) {
   tempFood = new Food(food["food_name"]);
@@ -87,9 +87,6 @@ function createButton(item_name, item) {
     }
   }
 
-  var br = document.createElement("br");
-  //parent.appendChild( br , button.nextSibling );
-
   return button;
 }
 function eraseResults() {
@@ -108,6 +105,8 @@ function searched(json) {
       var item_name = json["foods"][i]["food_name"];
       addToDictionary(json["foods"][i]);
       parent.appendChild(createButton(item_name));
+      var br = document.createElement('br');
+      parent.appendChild( br );
     }
     console.log(foodDict);
   }
