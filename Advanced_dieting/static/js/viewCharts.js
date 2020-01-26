@@ -46,6 +46,7 @@ function displayPieGraph(values, chart) {
     }
   });
 }
+
 function arrayify(json) {
   var arr = [];
   for (var i = 0; i < json.length; i++) {
@@ -54,6 +55,7 @@ function arrayify(json) {
   }
   return arr;
 }
+
 function getFromServer() {
   var xhttp = new XMLHttpRequest();
   xhttp.open("GET", "/eatHistory", true);
