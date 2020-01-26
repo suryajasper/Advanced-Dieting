@@ -12,7 +12,7 @@ img
 }
 
 h1, h2, h3, h4 {
-  font-family: fantasy;
+  font-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;
 }
 
 .tab-2{
@@ -58,6 +58,20 @@ input[type=submit] {
   font-size:14px;
 }
 
+input[type=number] {
+  background-color:#e3e5e8;
+  border: 2px solid #e3e5e8;
+  border-radius: 4px;
+  padding: 12px 20px;
+  font-size:14px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 button {
   background-color:#e3e5e8;
   border: 2px solid #e3e5e8;
@@ -93,6 +107,11 @@ input[type=password]:focus {
 }
 
 input[type=submit]:focus {
+  border: 3px solid #909090;
+  -webkit-transition: 0.5s;
+}
+
+input[type=number]:focus {
   border: 3px solid #909090;
   -webkit-transition: 0.5s;
 }
