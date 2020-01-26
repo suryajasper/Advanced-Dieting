@@ -1,6 +1,7 @@
 var parent = document.getElementById("stuff");
 
 async function getInfo(rawItem, debugMode) {
+  /*
   var splitArr = rawItem.split(' ');
   var item = rawItem;
   if (splitArr.length > 1) {
@@ -26,22 +27,22 @@ async function getInfo(rawItem, debugMode) {
   xhr.setRequestHeader("x-rapidapi-key", "cd5b695f86mshea1c3efaf3a5f98p1ea3b2jsnb129655a7665");
 
   xhr.send(data);
+  */
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("POST", "https://trackapi.nutritionix.com/v2/natural/nutrients", true);
+  xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.setRequestHeader("x-app-id", "0f5b2979");
+  xhttp.setRequestHeader("x-app-key", "4f56f9a75a02379481cd2cfc7e025527");
+  xhttp.setRequestHeader("x-remote-user-id", "0");
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState>3 && xhttp.status==200) { searched(xhttp.responseText); }
+  };
+  xhttp.send('{"query":"'+rawItem+'","timezone": "US/Eastern"}');
 }
 
 function searchFor(foodGroup) {
   var json = getInfo(foodGroup, true);
-}
-
-var search;
-function loadImage(keyword, output) {
-  search = new google.search.ImageSearch();
-  search.setSearchCompleteCallback(this, function() {searchComplete(output)}, null);
-  search.execute(keyword);
-}
-function searchComplete(output) {
-  if (search.results && search.results.length > 0) {
-    output.src = "url('" + search.results[0]['url'] + "')";
-  }
 }
 
 function createButton(item_name) {
@@ -61,10 +62,11 @@ function eraseResults() {
 function searched(json) {
   if (json != undefined) {
     eraseResults();
+    console.log(json);
     json = JSON.parse(json);
     console.log(json);
-    for (var i = 0; i < json["hits"].length; i++) {
-      var item_name = json["hits"][i]["fields"]["item_name"];
+    for (var i = 0; i < json["foods"].length; i++) {
+      var item_name = json["foods"][i]["fields"]["item_name"];
       parent.appendChild(createButton(item_name));
     }
   }
