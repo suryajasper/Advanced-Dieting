@@ -1,7 +1,7 @@
 var lineChart = document.getElementById("lineChart")
 var pieChart = document.getElementById("pieChart")
 
-function displayLineGraph(values, chart) {
+function displayPieGraph(values, chart) {
   var ctx = chart.getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'pie',
@@ -46,5 +46,21 @@ function displayLineGraph(values, chart) {
     }
   });
 }
-
-displayLineGraph([25, 25, 25, 10, 15], lineChart);
+function arrayify(json) {
+  var arr = [];
+  for (var i = 0; i < json.length; i++) {
+    var food = JSON.parse(json);
+    arr.push(food.cal);
+  }
+  return arr;
+}
+function getFromServer() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("GET", "/eatHistory", true);
+  xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState>3 && xhttp.status==200) {
+      displayPieGraph(arrayify(xhttp.responseText), pieChart);;
+    }
+  };
+}
