@@ -1,16 +1,20 @@
 <html>
   <head>
     <title>Login</title>
-    <script src="login.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
   </head>
   <body>
-    <form action="/login" method="post">
-      Username:<br>
-      <input type="text" name="username"><br>
-      Password:<br>
-      <input type="password" name="pass">
-      <br><br>
-      <input type="submit" value="Submit">
-    </form>
+    <div class="center-outside">
+      <div class="center-div">
+        <form action="/login" method="post">
+          Username<br>
+          <input type="text" name="user"><br>
+          Password<br>
+          <input type="password" name="pass">
+          <br><br>
+          <input type="submit" value="Submit">
+        </form>
+      </div>
+    </div>
   </body>
 </html>
