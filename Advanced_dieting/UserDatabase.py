@@ -1,4 +1,6 @@
 import json
+import os.path
+from os import path
 
 class UserDatabase:
 	def __init__(self):
@@ -32,7 +34,6 @@ class UserDatabase:
 		f.close()
 
 	def get_eat_history(self, usr):
-		print('yayayay')
 		f = open(usr + 'eat.db', 'r')
 		data = f.readlines()
 		f.close()
@@ -48,4 +49,23 @@ class UserDatabase:
 
 		print(foodList)
 		return(foodList)
+
+	def set_usr_prefs(self, usr, prefs):
+		print('ssdfsdf')
+		f = open(usr + '.prefs', 'w')
+		f.write(json.dumps(prefs))
+		f.close()
+
+	def check_is_prefs_set(self, usr):
+		if (path.exists(usr + '.prefs')):
+			return True
+		else:
+			return False
+
+	def get_usr_prefs(self, usr):
+		f = open(usr + '.prefs', 'wr')
+		data = f.readlines()
+		f.close()
+
+		return (json.loads(data[0]))
  

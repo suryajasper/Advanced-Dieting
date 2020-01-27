@@ -22,7 +22,11 @@ def frontPage():
 def login():
    if request.method == 'POST':
       if (usr_db.login(request.form['user'], request.form['pass'])):
-         resp = make_response(render_template(HEALTHDATA))
+         usr = request.cookies['user']
+         if (usr_db.check_is_prefs_set(usr)):
+            resp = redirect(url_for('mainPage'))
+         else:
+            resp = make_response(render_template(HEALTHDATA))
          resp.set_cookie('user', request.form['user'])
          resp.set_cookie('pass', request.form['pass'])
          return resp
@@ -57,8 +61,15 @@ def eat_history():
 
 @app.route('/userPreferences', methods=['POST', 'GET'])
 def usr_pref():
-
-   return (redirect(url_for('mainPage')))
+   usr = request.cookies['user']
+   if request.method == 'POST':
+      print('hell yeah', request.form)
+      j = {'Diabetes': request.form['disease']}
+      usr_db.set_usr_prefs(usr, j)
+      print('cmon')
+      return redirect(url_for("mainPage"))
+   else:
+      return jsonify(usr_db.get_usr_prefs())
 
 
 @app.route('/charts')
