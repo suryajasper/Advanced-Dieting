@@ -65,6 +65,7 @@ function getFromServer() {
       displayPieGraph(arrayify(xhttp.responseText), pieChart);;
     }
   };
+  xhttp.send();
 }
 
 getFromServer();
