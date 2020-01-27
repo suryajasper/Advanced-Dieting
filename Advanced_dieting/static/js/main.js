@@ -126,7 +126,8 @@ function createButton(item_name, item) {
 
     for (var i = 0; i < namesOfVars.length; i++) {
       var h4 = document.createElement("h4");
-      h4.innerHTML = (namesOfVars[i] + ": " + thingsToAdd[i].toString() + "g");
+      let measurement = namesOfVars[i] === "calories"? "cal" : (namesOfVars[i]==="potassium" || namesOfVars[i]==="sodium")?"mg":"g";
+      h4.innerHTML = (namesOfVars[i] + ": " + thingsToAdd[i].toString() + measurement);
       button.parentNode.insertBefore(h4, button.nextSibling);
     }
   }

@@ -60,15 +60,27 @@ function freq(val, arr) {
 }
 
 function arrayify(json) {
+  /*
   var arr = [];
-  for (var i = 0; i < json.length; i++) {
-    var food = JSON.parse(json);
-    arr.push(food.foodGroup);
+  var food = JSON.parse(json);
+  for (var i = 0; i < food.length; i++) {
+    arr.push(food[i].foodGroup);
   }
   var temparr = ["Dairy", "Protein", "Fruit", "Vegetable", "Grain", "Other"];
-  var temparr2 = [0, 0, 0, 0, 0, 0]
-  for (var i = 0; i < temparr2.length; i++) {
-    temparr2[i] = freq(temparr[i], arr);
+  var temparr2 = []
+  for (var i = 0; i < temparr.length; i++) {
+    temparr2.push(freq(temparr[i], arr));
+  }
+  return temparr2; */
+  var arr = [];
+  var food = JSON.parse(json);
+  for (var i = 0; i < food.length; i++) {
+    arr.push(food[i]["foodGroup"]);
+  }
+  var temparr = ["Dairy", "Protein", "Fruit", "Vegetable", "Grain", "Other"];
+  var temparr2 = []
+  for (var i = 0; i < temparr.length; i++) {
+    temparr2.push(freq(temparr[i], arr));
   }
   return temparr2;
 }
@@ -86,3 +98,4 @@ function getFromServer() {
 }
 
 getFromServer();
+//displayPieGraph([1, 2, 3, 4, 5, 6], pieChart);
