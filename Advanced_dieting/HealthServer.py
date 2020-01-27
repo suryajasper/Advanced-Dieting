@@ -22,7 +22,7 @@ def frontPage():
 def login():
    if request.method == 'POST':
       if (usr_db.login(request.form['user'], request.form['pass'])):
-         usr = request.cookies['user']
+         usr = request.form['user']
          if (usr_db.check_is_prefs_set(usr)):
             resp = redirect(url_for('mainPage'))
          else:
@@ -63,10 +63,8 @@ def eat_history():
 def usr_pref():
    usr = request.cookies['user']
    if request.method == 'POST':
-      print('hell yeah', request.form)
       j = {'Diabetes': request.form['disease']}
       usr_db.set_usr_prefs(usr, j)
-      print('cmon')
       return redirect(url_for("mainPage"))
    else:
       return jsonify(usr_db.get_usr_prefs())
