@@ -83,6 +83,19 @@ function addToDictionary(food) {
   tempFood.setFat(food["nf_total_fat"]);
   tempFood.setImage(food["photo"]["highres"]);
   tempFood.setServingQuantity(food["serving_qty"]);
+<<<<<<< HEAD
+  var intfoodgroup = food["tags"]["food_group"];
+  var realfoodgroup = null;
+  var temparr = ["Dairy", "Protein", "Fruit", "Vegetable", "Grain"];
+  if (intfoodgroup > 5)
+    realfoodgroup = "Other";
+  else {
+    realfoodgroup = temparr[intfoodgroup-1];
+  }
+  tempFood.setFoodGroup(realfoodgroup);
+  console.log(tempFood.foodGroup);
+=======
+>>>>>>> d22ed1207e1c4853a5bdd7c76a76dd4de82992ee
   foodDict[food["food_name"]] = tempFood;
 }
 function createButton(item_name, item) {
@@ -100,6 +113,7 @@ function createButton(item_name, item) {
 
   eatButton.onclick = function() {
     eatHistory.push(foodDict[item_name]);
+    console.log(foodDict[item_name].foodGroup);
     sendToServer(foodDict[item_name]);
   }
   parent.appendChild( eatButton , button.nextSibling );
