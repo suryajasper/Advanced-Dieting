@@ -6,7 +6,7 @@ function displayPieGraph(values, chart) {
   var myChart = new Chart(ctx, {
     type: 'pie',
     data: {
-        labels: ['Grain', 'Fruit', 'Vegetable', 'Meat/Beans', 'Milk/Dairy'],
+        labels: ["Dairy", "Protein", "Fruit", "Vegetable", "Grain", "Other"],
         datasets: [{
             label: 'Food group consumption',
             data: values,
@@ -15,14 +15,16 @@ function displayPieGraph(values, chart) {
                 'rgba(249, 0, 0, 0.31)',
                 'rgba(11, 79, 0, 0.56)',
                 'rgba(82, 7, 7, 0.65)',
-                'rgba(255, 246, 124, 0.61)'
+                'rgba(255, 246, 124, 0.61)',
+                'rgba(143, 4, 218, 0.61)'
             ],
             borderColor: [
               'rgba(111, 57, 7, 0.61)',
               'rgba(249, 0, 0, 0.72)',
               'rgba(11, 79, 0, 0.83)',
               'rgba(98, 5, 5, 0.84)',
-              'rgba(255, 246, 124, 0.81)'
+              'rgba(255, 246, 124, 0.81)',
+              'rgba(166, 0, 255, 0.85)'
             ],
             borderWidth: 1
         }]
@@ -47,13 +49,28 @@ function displayPieGraph(values, chart) {
   });
 }
 
+function freq(val, arr) {
+  var count = 0;
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] === val) {
+      count++;
+    }
+  }
+  return (count/arr.length);
+}
+
 function arrayify(json) {
   var arr = [];
   for (var i = 0; i < json.length; i++) {
     var food = JSON.parse(json);
-    arr.push(food.cal);
+    arr.push(food.foodGroup);
   }
-  return arr;
+  var temparr = ["Dairy", "Protein", "Fruit", "Vegetable", "Grain", "Other"];
+  var temparr2 = [0, 0, 0, 0, 0, 0]
+  for (var i = 0; i < temparr2.length; i++) {
+    temparr2[i] = freq(temparr[i], arr);
+  }
+  return temparr2;
 }
 
 function getFromServer() {

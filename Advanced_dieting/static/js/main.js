@@ -1,3 +1,4 @@
+var somethingWentWrong = false;
 var parent = document.getElementById("stuff");
 var foodDict = {};
 var eatHistory = [];
@@ -18,8 +19,10 @@ async function getInfo(rawItem, debugMode) {
   var xhttp = new XMLHttpRequest();
   xhttp.open("POST", "https://trackapi.nutritionix.com/v2/natural/nutrients", true);
   xhttp.setRequestHeader("Content-type", "application/json");
-  xhttp.setRequestHeader("x-app-id", "48455876");
-  xhttp.setRequestHeader("x-app-key", "060a6724c37307eaf9836fbd94ea6195");
+  var userID = somethingWentWrong ? "987cfd3d" : "48455876";
+  var userKey = somethingWentWrong ? "af94bd50dcd0de267ab673e08e4cd649" : "060a6724c37307eaf9836fbd94ea6195";
+  xhttp.setRequestHeader("x-app-id", userID);
+  xhttp.setRequestHeader("x-app-key", userKey);
   xhttp.setRequestHeader("x-remote-user-id", "0");
   xhttp.onreadystatechange = function() {
     if (xhttp.readyState>3 && xhttp.status==200) {
@@ -83,6 +86,15 @@ function addToDictionary(food) {
   tempFood.setFat(food["nf_total_fat"]);
   tempFood.setImage(food["photo"]["highres"]);
   tempFood.setServingQuantity(food["serving_qty"]);
+  var intfoodgroup = food["tags"]["food_group"];
+  var realfoodgroup = null;
+  var temparr = ["Dairy", "Protein", "Fruit", "Vegetable", "Grain"];
+  if (intfoodgroup > 5)
+    realfoodgroup = "Other";
+  else {
+    realfoodgroup = temparr[intfoodgroup-1];
+  }
+  tempFood.setFoodGroup(realfoodgroup);
   foodDict[food["food_name"]] = tempFood;
 }
 function createButton(item_name, item) {

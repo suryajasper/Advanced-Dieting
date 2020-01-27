@@ -13,6 +13,10 @@ class Food {
     this.fat = 0;
     this.img = null;
     this.servingQty = 0;
+    this.foodGroup = null;
+  }
+  setFoodGroup(group) {
+    this.foodGroup = group;
   }
   setCalories(val) {
     this.cal = val;
