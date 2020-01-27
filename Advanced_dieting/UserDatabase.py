@@ -1,3 +1,5 @@
+import json
+
 class UserDatabase:
 	def __init__(self):
 		self.ufile = 'usrdata.db'
@@ -18,6 +20,32 @@ class UserDatabase:
 		f = open(self.ufile, 'a')
 		for i in ilist:
 			usr += ' ' + i
-		f.write(usr)
+		f.write(usr + '\n')
+		f.close()
+		f = open(usr + 'eat.db' 'w')
 		f.close()
 		return True
+
+	def log_food(self, usr, jso):
+		f =	open(usr + 'eat.db', 'a')	
+		f.write(json.dumps(jso) + '\n')
+		f.close()
+
+	def get_eat_history(self, usr):
+		print('yayayay')
+		f = open(usr + 'eat.db', 'r')
+		data = f.readlines()
+		f.close()
+
+		foodList = []
+		if len(data) >= 30:
+			rang = 30
+		else:
+			rang = len(data)
+
+		for i in range(len(data)- 1, len(data) - rang, -1):
+			foodList.append(json.loads(data[i]))
+
+		print(foodList)
+		return(foodList)
+ 

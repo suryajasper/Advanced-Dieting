@@ -1,4 +1,4 @@
-from flask import Flask, escape, request, render_template, make_response, url_for, redirect
+from flask import Flask, escape, request, render_template, make_response, url_for, redirect, jsonify
 from UserDatabase import UserDatabase
 app = Flask(__name__)
 
@@ -8,6 +8,7 @@ LOGIN = 'login.html'
 HEALTHDATA = 'healthData.html'
 INDEX = 'mainPage.html'
 SIGNUP = 'signup.html'
+CHARTS = 'charts.html'
 
 def initialize_vars():
 	global usr_db
@@ -40,8 +41,29 @@ def signup():
       return render_template(SIGNUP)
 
 @app.route('/mainPage')
-def mainBlob():
+def mainPage():
    return render_template(INDEX)
+
+@app.route("/eatHistory", methods=['POST', 'GET'])
+def eat_history():
+   usr = request.cookies['user']
+   if request.method == 'POST':
+      json = request.get_json(force=True)
+      print(request, json)
+      usr_db.log_food(usr, json)
+      return('good')
+   else:
+      return (jsonify(usr_db.get_eat_history(usr)))
+
+@app.route('/userPreferences', methods=['POST', 'GET'])
+def usr_pref():
+
+   return (redirect(url_for('mainPage')))
+
+
+@app.route('/charts')
+def graphs():
+   return render_template(CHARTS)
 
 if __name__ == '__main__':
    initialize_vars()
