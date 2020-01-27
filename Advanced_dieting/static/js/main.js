@@ -95,6 +95,7 @@ function addToDictionary(food) {
     realfoodgroup = temparr[intfoodgroup-1];
   }
   tempFood.setFoodGroup(realfoodgroup);
+  console.log(tempFood.foodGroup);
   foodDict[food["food_name"]] = tempFood;
 }
 function createButton(item_name, item) {
@@ -112,6 +113,7 @@ function createButton(item_name, item) {
 
   eatButton.onclick = function() {
     eatHistory.push(foodDict[item_name]);
+    console.log(foodDict[item_name].foodGroup);
     sendToServer(foodDict[item_name]);
   }
   parent.appendChild( eatButton , button.nextSibling );
