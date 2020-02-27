@@ -15,6 +15,17 @@ h1, h2, h3, h4 {
   font-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;
 }
 
+.filter {
+  text-decoration: none;
+  cursor: pointer;
+  text-align: left;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+.filter:hover {
+  text-decoration: underline;
+}
+
 .tab-2{
 	display:inline-block; width:TWO-TAB-WIDTH;
 }

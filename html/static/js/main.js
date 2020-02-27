@@ -11,8 +11,22 @@ var meats = "Anchovy/Bacon/Beef/Buffalo/Caribou/Catfish/Chicken/Clams/Cod/Cornis
 var itemIn = document.getElementById("itemIn");
 var searchButton = document.getElementById("searchButton");
 
+var filterTable = document.getElementById("filterTable");
+
 searchButton.onclick = function() {
   searchFor(itemIn.value);
+}
+
+function hideOrShowFilters() {
+  console.log("HERE");
+  if (filterTable.style.visibility === "collapse") {
+    filterTable.style.visibility = "visible";
+    console.log("SHOWING");
+  }
+  else {
+    filterTable.style.visibility = "collapse";
+    console.log("HIDING");
+  }
 }
 
 async function getInfo(rawItem, debugMode) {

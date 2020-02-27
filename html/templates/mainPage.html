@@ -3,6 +3,9 @@
     <title>Advanced Dieting</title>
     <meta charset = "utf-8"></meta>
     <script src="https://www.google.com/jsapi"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   </head>
   <link rel="stylesheet" href="../static/css/main.css">
   <body>
@@ -12,33 +15,59 @@
       <span class="tab-2"></span>
       <input id = "itemIn" style = "display: inline-block" type = "text"></input>
       <a class = "glass" id = "searchButton">Search</a>
-      <br>
-        <a class = "glass" id = "viewCharts" href = "/charts">View Charts</a>
+
+      <div class="panel-group" style = "text-align: center;">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" href="#collapse1">Filter</a>
+              </h4>
+            </div>
+            <div id="collapse1" class="panel-collapse collapse">
+              <div id = "filterTable">
+                <table>
+                  <tbody>
+                    <tr id = "food_groups">
+                      <p style = "margin-bottom: 5px; text-align:left;">Food Groups</p>
+                      <td>
+                        <input type="checkbox" id="fruits" name="fruits" value="fruits">
+                        <label for="fruits">Fruits</label>
+                        <!--a class="glass" onclick = "searchFor('fruits')">Fruits</a-->
+                      </td>
+                      <td>
+                        <input type="checkbox" id="vegetables" name="vegetables" value="vegetables">
+                        <label for="vegetables">Vegetables</label>
+                        <!--a class="glass" onclick = "searchFor('vegetables')">Vegetables</a-->
+                      </td>
+                      <td>
+                        <input type="checkbox" id="grains" name="grains" value="grains">
+                        <label for="grains">Grains</label>
+                        <!--a class="glass" onclick = "searchFor('grains')">Grains</a-->
+                      </td>
+                      <td>
+                        <input type="checkbox" id="dairy" name="dairy" value="dairy">
+                        <label for="dairy">Milk/Dairy</label>
+                        <!--a class="glass" onclick = "searchFor('dairy')">Milk/Dairy</a-->
+                      </td>
+                      <td>
+                        <input type="checkbox" id="meat/beans" name="meat/beans" value="meat/beans">
+                        <label for="meat/beans">Meat/Beans</label>
+                        <!--a class="glass" onclick = "searchFor('meat/beans')">Meat/Beans</a-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <br>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <a class = "glass" id = "viewCharts" href = "/charts">View Charts</a>
       <br>
       <table>
-        <tbody>
-          <tr id = "food_groups">
-            <td>
-              <a class="glass" onclick = "searchFor('fruits')">Fruits</a>
-            </td>
-            <td>
-              <a class="glass" onclick = "searchFor('vegetables')">Vegetables</a>
-            </td>
-            <td>
-              <a class="glass" onclick = "searchFor('grains')">Grains</a>
-            </td>
-            <td>
-              <a class="glass" onclick = "searchFor('dairy')">Milk/Dairy</a>
-            </td>
-            <td>
-              <a class="glass" onclick = "searchFor('meat/beans')">Meat/Beans</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <table>
-          <tr id = "stuff">
-          </tr>
+        <tr id = "stuff">
+        </tr>
       </table>
     </div>
     <script src = "../static/js/Food.js"></script>
