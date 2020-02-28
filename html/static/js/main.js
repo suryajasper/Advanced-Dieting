@@ -47,7 +47,14 @@ async function getInfoSpecific(rawItem) {
 }
 
 function processInfoJSON(json) {
-  
+  console.log(json);
+  var common = json["common"];
+  var foodRawArr = "";
+  for (var i = 0; i < common.length; i++) {
+    var foodName = common[i].food_name;
+    foodRawArr += foodName + "/";
+  }
+  getInfoSpecific(foodRawArr);
 }
 
 async function getInfo(rawItem, debugMode) {
