@@ -139,24 +139,37 @@ function addToDictionary(food) {
   foodDict[food["food_name"]] = tempFood;
 }
 function createButton(item_name, item) {
+  var cell = document.createElement('div');
+  cell.classList.add( "col-xs-6" );
+  cell.classList.add( "col-sm-4" );
+  cell.classList.add( "col-lg-3" );
+  cell.classList.add( "cellFormat" );
+
+  var well = document.createElement('div');
+  well.classList.add('well');
+
   var button = document.createElement('button');
   var link = document.createTextNode(item_name + " details");
   button.appendChild(link);
 
   var image = document.createElement("IMG");
   image.src = foodDict[item_name].img;
-  parent.appendChild( image , button.nextSibling );
+  well.appendChild( image );
+
+  var br = document.createElement('br');
+  well.appendChild(br);
 
   var eatButton = document.createElement('button');
   var eatText = document.createTextNode("eat " + item_name);
   eatButton.appendChild(eatText);
+  eatButton.style.display = "inline-block";
 
   eatButton.onclick = function() {
     eatHistory.push(foodDict[item_name]);
     console.log(foodDict[item_name].foodGroup);
     sendToServer(foodDict[item_name]);
   }
-  parent.appendChild( eatButton , button.nextSibling );
+  well.appendChild( eatButton );
 
   button.onclick = function() {
     var fid = foodDict[item_name];
@@ -172,7 +185,12 @@ function createButton(item_name, item) {
     }
   }
 
-  return button;
+  button.style.display = "inline-block";
+  well.appendChild(button);
+
+  cell.appendChild(well);
+
+  return cell;
 }
 function eraseResults() {
   while (parent.firstNode) {
@@ -190,9 +208,8 @@ function searched(json) {
       var item_name = json["foods"][i]["food_name"];
       if (json["foods"][i]["photo"]["highres"] != undefined) {
         addToDictionary(json["foods"][i]);
-        parent.appendChild(createButton(item_name));
-        var br = document.createElement('br');
-        parent.appendChild( br );
+        var cell = createButton(item_name);
+        parent.appendChild(cell);
       }
     }
     console.log(foodDict);

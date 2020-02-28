@@ -3,7 +3,6 @@
   text-align: center;
   display: inline-block;
 }
-
 img
 {
   max-width: 150px;
@@ -14,7 +13,14 @@ img
 h1, h2, h3, h4 {
   font-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;
 }
-
+fieldset {
+  border:2px solid rgb(68, 80, 77);
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+  border-radius:8px;
+  width:80%;
+  margin-top: 10px;
+}
 .filter {
   text-decoration: none;
   cursor: pointer;
@@ -47,10 +53,19 @@ h1 {
 }
 
 body {
-  background: white;
+  -webkit-user-select: none;
+     -moz-user-select: -moz-none;
+      -ms-user-select: none;
+          user-select: none;
+
+  background: rgb(255, 255, 255);
   color: #6a7480;
   font-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;
   font-size:20px;
+}
+
+input, textarea {
+ -moz-user-select: text;
 }
 
 input[type=text] {
@@ -99,6 +114,13 @@ input[type=button] {
   padding: 12px 20px;
   font-size:14px;
   cursor: pointer;
+}
+
+.cellFormat {
+  margin-left: 2px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-right: 2px;
 }
 
 input[type=password] {
