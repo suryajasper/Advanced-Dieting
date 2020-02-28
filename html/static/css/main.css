@@ -108,6 +108,13 @@ input[type=password] {
   padding: 12px 20px;
   font-size:14px;
 }
+input[type=checkbox] {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+input[type=checkbox]:checked {
+  border: 7px solid blue;
+}
 
 input[type=text]:focus {
   border: 3px solid #909090;

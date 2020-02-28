@@ -29,7 +29,7 @@ function hideOrShowFilters() {
   }
 }
 
-async function getInfo(rawItem, debugMode) {
+async function getInfoSpecific(rawItem) {
   var xhttp = new XMLHttpRequest();
   xhttp.open("POST", "https://trackapi.nutritionix.com/v2/natural/nutrients", true);
   xhttp.setRequestHeader("Content-type", "application/json");
@@ -44,6 +44,25 @@ async function getInfo(rawItem, debugMode) {
     }
   };
   xhttp.send('{"query":"'+rawItem+'","timezone": "US/Western"}');
+}
+
+function processInfoJSON(json) {
+  
+}
+
+async function getInfo(rawItem, debugMode) {
+
+  var userID = somethingWentWrong ? "987cfd3d" : "48455876";
+  var userKey = somethingWentWrong ? "af94bd50dcd0de267ab673e08e4cd649" : "060a6724c37307eaf9836fbd94ea6195";
+
+  const response = await axios.get(('https://trackapi.nutritionix.com/v2/search/instant?query=' + rawItem), {
+    headers: {
+      'x-app-id': userID,
+      'x-app-key': userKey,
+    }
+  });
+
+  processInfoJSON(response["data"]);
 }
 
 function sendToServer(item) {
