@@ -1,5 +1,6 @@
 var somethingWentWrong = false;
 var parent = document.getElementById("stuff");
+var brandedParent = document.getElementById("branded");
 var foodDict = {};
 var eatHistory = [];
 var vegetables = "amaranth leaves/arrowroot/artichoke/arugula/asparagus/bamboo shoots/green beans/beets/belgian endive/bitter melon/bok choy/broadbeans/broccoli/broccoli rabe/brussel sprouts/green cabbage/red cabbage/carrot/cassava/cauliflower/celeriac/celery/chayote/chicory/collards/corn/crookneck/cucumber/daikon/dandelion greens/eggplant/fennel/fiddleheads/ginger root/horseradish/jicama/kale/kohlrabi/leeks/iceberg lettuce/leaf lettuce/mushrooms/mustard greens/okra/onion/parsnip/peas/pepper/potato/pumpkin/radicchio/radishes/rutabaga/salsify/shallots/snow peas/sorrel/spaghetti squash/spinach/squash/sugar snap peas/sweat potato/swiss chard/tomatillo/tomato/turnip/watercress/yam root/zucchini";
@@ -29,7 +30,7 @@ function hideOrShowFilters() {
   }
 }
 
-async function getInfoSpecific(rawItem) {
+async function getInfoSpecific(rawItem, isCommon) {
   var xhttp = new XMLHttpRequest();
   xhttp.open("POST", "https://trackapi.nutritionix.com/v2/natural/nutrients", true);
   xhttp.setRequestHeader("Content-type", "application/json");
@@ -40,7 +41,7 @@ async function getInfoSpecific(rawItem) {
   xhttp.setRequestHeader("x-remote-user-id", "0");
   xhttp.onreadystatechange = function() {
     if (xhttp.readyState>3 && xhttp.status==200) {
-      searched(xhttp.responseText);
+      searched(xhttp.responseText, isCommon);
     }
   };
   xhttp.send('{"query":"'+rawItem+'","timezone": "US/Western"}');
@@ -49,12 +50,22 @@ async function getInfoSpecific(rawItem) {
 function processInfoJSON(json) {
   console.log(json);
   var common = json["common"];
+  var branded = json["branded"];
+
   var foodRawArr = "";
+  var brandedArr = "";
+
   for (var i = 0; i < common.length; i++) {
     var foodName = common[i].food_name;
     foodRawArr += foodName + "/";
   }
-  getInfoSpecific(foodRawArr);
+  for (var i = 0; i < branded.length; i++) {
+    var foodName = branded[i].food_name;
+    brandedArr += foodName + "/";
+  }
+
+  getInfoSpecific(foodRawArr, true);
+  getInfoSpecific(brandedArr, false);
 }
 
 async function getInfo(rawItem, debugMode) {
@@ -198,7 +209,7 @@ function eraseResults() {
   }
 }
 
-function searched(json) {
+function searched(json, isCommon) {
   if (json != undefined) {
     eraseResults();
     console.log(json);
@@ -209,7 +220,12 @@ function searched(json) {
       if (json["foods"][i]["photo"]["highres"] != undefined) {
         addToDictionary(json["foods"][i]);
         var cell = createButton(item_name);
-        parent.appendChild(cell);
+        if (isCommon) {
+          parent.appendChild(cell);
+        }
+        else {
+          brandedParent.appendChild(cell);
+        }
       }
     }
     console.log(foodDict);
