@@ -8,16 +8,16 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
-  <link rel="stylesheet" href="../static/css/main.css">
+  <link rel="stylesheet" href="static/css/main.css">
   <body>
     <div class = "center" style = "width: 100%;">
         <h3 style = "display: inline-block">Search for a specific item</h3>
         <span class="tab-2"></span>
         <span class="tab-2"></span>
-        <input id = "itemIn" style = "display: inline-block" type = "text"></input>
+        <input id = "itemIn" style = "display: inline-block; width: 300" type = "text"></input>
         <a class = "glass" id = "searchButton">Search</a>
         <a class = "glass" id = "viewCharts" href = "/charts">View Charts</a>
-
+        <br>
         <div class="center panel-group" style = "width: 50%; text-align: center;">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -64,7 +64,7 @@
             </div>
           </div>
         </div>
-        <br>
+        <br><br><br>
         <div class="center panel-group" style = "width: 90%; text-align: center;">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -104,7 +104,16 @@
           </div>
         </div>
     </div>
-    <script src = "../static/js/Food.js"></script>
-    <script src = "../static/js/main.js"></script>
+
+    <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="/__/firebase/7.9.3/firebase-app.js"></script>
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="/__/firebase/7.9.3/firebase-analytics.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="/__/firebase/7.9.3/firebase-auth.js"></script>
+    <script src="/__/firebase/7.9.3/firebase-firestore.js"></script>
+    <script src = "static/js/Food.js"></script>
+    <script src = "static/js/main.js"></script>
   </body>
 </html>

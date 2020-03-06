@@ -9,24 +9,55 @@ var dairy = "Baked Milk/Bulgarian Yogurt/Butter/Buttermilk/Camel Milk/Cheese/Cor
 var grain = "Amaranth/Barley/Brown Rice/Brown Rice Bread/Brown Rice Tortilla/Buckwheat/Cracked Wheat/Farro/Flaxseed/Millet/Oats/Oat Bread/Oat Cereal/Oatmeal/Popcorn/Whole Wheat Cereal Flakes/Muesli/Rolled Oats/Quinoa/Rye/Sorghum/Spelt/Teff/Triticale/Whole Grain Barley/Wheat Berries/Whole Grain Cornmeal/Whole Rye/Whole Wheat Bread/Whole Wheat Couscous/Whole Wheat Crackers/Whole Wheat Pasta/Whole Wheat Pita Bread/Whole Wheat Sandwich Buns And Rolls/Whole Wheat Tortillas/Wild Rice/Cornbread/Corn Tortillas/Couscous/Crackers/Flour Tortillas/Grits/Noodles/Spaghetti/Macaroni";
 var meats = "Anchovy/Bacon/Beef/Buffalo/Caribou/Catfish/Chicken/Clams/Cod/Cornish Game Hen/Crab/Duck/Eel/Emu/Goat/Goose/Grouse/Halibut/Ham/Kangaroo/Lamb/Lobster/Mackerel/Mahi Mahi/Octopus/Ostrich/Oysters/Pheasant/Pork/Quail/Rabbit/Salmon/Sardines/Scallops/Shark/Shrimp/Snake/Squab/Squid/Swordfish/Tilapia/Tuna/Turkey/Veal/Venison/Anasazi Beans/Black Beans/Black-Eyed Peas/Butter Beans/Cannellini Beans/Flageolet Beans/Garbanzo Beans/Chickpeas/Desi/Bengal Gram/Chana Dal/Great Northern Beans/Kidney Beans/Lentils/Lupini Beans/Marrow Beans/Moth Beans/Mung Beans/Navy Beans/Pigeon Pea/Pink Beans/Pinto Beans/Rice Beans/Scarlet Runner Beans/Soybean/Soya Bean/Spanish Tolosana Beans/Split Peas";
 
+var filters = [document.getElementById("fruits"), document.getElementById("vegetables"),document.getElementById("grains"),document.getElementById("dairy"),document.getElementById("meat/beans")];
+
 var itemIn = document.getElementById("itemIn");
 var searchButton = document.getElementById("searchButton");
 
 var filterTable = document.getElementById("filterTable");
 
+firebase.initializeApp({
+  apiKey: '### FIREBASE API KEY ###',
+  authDomain: '### FIREBASE AUTH DOMAIN ###',
+  projectId: '### CLOUD FUNCTIONS PROJECT ID ###',
+  databaseURL: 'https://### YOUR DATABASE NAME ###.firebaseio.com'
+});
+
+// Initialize Cloud Functions through Firebase
+//var functions = firebase.functions();
+/*
+var addMessage = firebase.functions().httpsCallable('addMessage');
+addMessage({text: "users"}).then(function(result) {
+  var sanitizedMessage = result.data.text;
+  console.log(sanitizedMessage);
+}).catch(function(error) {
+  var code = error.code;
+  var message = error.message;
+  var details = error.details;
+});*/
+
+//addMessage();
+
 searchButton.onclick = function() {
-  searchFor(itemIn.value);
+  var rawFilters = [];
+  for (var i = 0; i < filters.length; i++) {
+    if (filters[i].checked) {
+      rawFilters.push(filters[i].value);
+      searchFor(filters[i].value);
+    }
+  }
+  if (itemIn.value != "") {
+    searchFor(itemIn.value);
+  }
 }
 
 function hideOrShowFilters() {
   console.log("HERE");
   if (filterTable.style.visibility === "collapse") {
     filterTable.style.visibility = "visible";
-    console.log("SHOWING");
   }
   else {
     filterTable.style.visibility = "collapse";
-    console.log("HIDING");
   }
 }
 
@@ -165,6 +196,9 @@ function createButton(item_name, item) {
 
   var image = document.createElement("IMG");
   image.src = foodDict[item_name].img;
+  image.onclick = function() {
+    window.location = '../templates/foodDetails.html?foodName='+item_name;
+  };
   well.appendChild( image );
 
   var br = document.createElement('br');

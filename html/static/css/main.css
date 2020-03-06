@@ -173,7 +173,9 @@ select {
 select:focus {
   outline: none;
 }
-
+img {
+  cursor: pointer;
+}
 .glass
 {
   margin: 10;
