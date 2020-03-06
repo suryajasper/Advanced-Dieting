@@ -63,6 +63,9 @@ body {
   font-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;
   font-size:20px;
 }
+body[data-theme='dark'] {
+  background: rgb(43, 43, 43);
+}
 
 input, textarea {
  -moz-user-select: text;

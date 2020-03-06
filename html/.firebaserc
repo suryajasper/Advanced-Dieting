@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "web": "advanced-dieting",
+    "default": "advanced-dieting"
+  }
+}
