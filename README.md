@@ -15,14 +15,9 @@ Perfect for people with food-related allergies and diabetes or for people who ju
 # How does it work?
 
 Uses online nutrition API’s to get information about food and allows the users to enter information and select various food groups to find food that suits them
-Lot of backend code to store all data in a server for long-term retention (Secure)
 Allows them to find information about all the food
 Allows them to enter what they are eating
 Displays their progress as well as consumption per food group in a separate page
 Written in HTML, JS, CSS, and python
-
-# Dependencies
-
-Make sure to install flask
-- windows: pip install flask
-- mac:     pip3 install flask
+- old server: Lot of backend code to store all data in a server for long-term retention (Secure)
+- new server: using firebase to store all data
