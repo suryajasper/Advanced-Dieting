@@ -1,10 +1,22 @@
 <html>
   <head>
     <title>Login</title>
+    <meta charset = "utf-8">
     <link rel="stylesheet" type="text/css" href="static/css/main.css">
+    <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="/__/firebase/7.9.3/firebase-app.js"></script>
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="/__/firebase/7.9.3/firebase-analytics.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="/__/firebase/7.9.3/firebase-auth.js"></script>
+    <script src="/__/firebase/7.9.3/firebase-firestore.js"></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+
   </head>
   <body>
-    <div class="center-outside">
+    <!--div class="center-outside">
       <div class="center-div">
         <form action="/login" method="post">
           Username<br>
@@ -16,6 +28,19 @@
         </form>
         <a href="/signup">Sign Up</a>
       </div>
+    </div-->
+
+    <!-- The surrounding HTML is left untouched by FirebaseUI.
+     Your app may use that space for branding, controls and other customizations.-->
+    <div class="center-outside">
+      <div class="center-div">
+        <h1>Create an account or log in</h1>
+        <div id="firebaseui-auth-container"></div>
+        <div id="loader">Loading...</div>
+      </div>
     </div>
+
+    <script src = "static/js/fireBase.js"></script>
+    <script src = "static/js/login.js"></script>
   </body>
 </html>

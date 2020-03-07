@@ -16,13 +16,6 @@ var searchButton = document.getElementById("searchButton");
 
 var filterTable = document.getElementById("filterTable");
 
-firebase.initializeApp({
-  apiKey: '### FIREBASE API KEY ###',
-  authDomain: '### FIREBASE AUTH DOMAIN ###',
-  projectId: '### CLOUD FUNCTIONS PROJECT ID ###',
-  databaseURL: 'https://### YOUR DATABASE NAME ###.firebaseio.com'
-});
-
 // Initialize Cloud Functions through Firebase
 //var functions = firebase.functions();
 /*

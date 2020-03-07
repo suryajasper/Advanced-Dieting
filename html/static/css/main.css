@@ -63,8 +63,68 @@ body {
   font-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;
   font-size:20px;
 }
-body[data-theme='dark'] {
-  background: rgb(43, 43, 43);
+@media screen and (prefers-color-scheme: dark) {
+  body {
+    background-color: black;
+    color: white;
+  }
+  .panel-default > .panel-heading {
+    background-color: rgb(73, 73, 73);
+  }
+  a[data-toggle = collapse] {
+    color: white;
+  }
+  .collapse.in {
+    background-color: rgb(52, 52, 52);
+  }
+  .well {
+    background-color: #292929;
+  }
+  .row {
+    background-color: rgb(62, 74, 71);
+  }
+  input[type=text] {
+    background-color:#575757;
+  }
+  input:placeholder {
+    color: black;
+  }
+
+  input[type=submit] {
+    background-color:#575757;
+  }
+
+  input[type=number] {
+    background-color:#575757;
+  }
+
+  button {
+    background-color:#575757;
+  }
+
+  input[type=button] {
+    background-color:#e3e5e8;
+    border: 2px solid #e3e5e8;
+    border-radius: 4px;
+    padding: 12px 20px;
+    font-size:14px;
+    cursor: pointer;
+  }
+
+  .cellFormat {
+    margin-left: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-right: 2px;
+  }
+
+  input[type=password] {
+    background-color:#e3e5e8;
+    border: 2px solid #e3e5e8;
+    border-radius: 4px;
+    padding: 12px 20px;
+    font-size:14px;
+  }
 }
 
 input, textarea {
