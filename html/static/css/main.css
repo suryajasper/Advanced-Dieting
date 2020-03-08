@@ -63,6 +63,7 @@ body {
   font-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;
   font-size:20px;
 }
+/*
 @media screen and (prefers-color-scheme: dark) {
   body {
     background-color: black;
@@ -125,7 +126,7 @@ body {
     padding: 12px 20px;
     font-size:14px;
   }
-}
+}*/
 
 input, textarea {
  -moz-user-select: text;

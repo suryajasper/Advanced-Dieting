@@ -39,13 +39,19 @@
 })()
 */
 
+var email = document.getElementById("email");
 var username = document.getElementById("username");
 var pword = document.getElementById("pword");
 var gender = document.getElementById("gender");
 var weight = document.getElementById("weight");
 var height = document.getElementById("height");
 var age = document.getElementById("age");
-var testSubmit = document.getElementById("testSubmit");
+
+var diseases = document.getElementById("diseases");
+var toReduce = document.getElementById("toReduce");
+var toIncrease = document.getElementById("toIncrease");
+
+var submitButton = document.getElementById("testSubmit");
 
 var firebaseConfig = {
   apiKey: "AIzaSyC6BBIddvML8T57p5wRnM66Bh2iPCLJayM",
@@ -60,6 +66,9 @@ var firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+var database = firebase.database();
+var rootUser = database.ref("users");
+
 function writeUserData(userId, name, email, imageUrl) {
   firebase.database().ref('users/' + userId).set({
     username: name,
@@ -70,15 +79,23 @@ function writeUserData(userId, name, email, imageUrl) {
 
 
 function signUpUser() {
-  firebase.auth().createUserWithEmailAndPassword(username.value, pword.value).then(auth => {
-
-
+  firebase.auth().createUserWithEmailAndPassword(email.value, pword.value).then(auth => {
+    rootUser.child(username.value).set({
+      gender: gender.value,
+      weight: weight.value,
+      height: height.value,
+      age: age.value,
+      diseases: diseases.value,
+      to_reduce: toReduce.value,
+      to_increase: toIncrease.value
+    });
+    console.log("aweofij");
   }).catch(error => {
     console.log(error.message);
   })
 }
 
-testSubmit.addEventListener('submit', (e) => {
+submitButton.addEventListener('click', (e) => {
   e.preventDefault();
   signUpUser();
 })
