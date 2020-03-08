@@ -16,20 +16,21 @@ var searchButton = document.getElementById("searchButton");
 
 var filterTable = document.getElementById("filterTable");
 
-// Initialize Cloud Functions through Firebase
-//var functions = firebase.functions();
-/*
-var addMessage = firebase.functions().httpsCallable('addMessage');
-addMessage({text: "users"}).then(function(result) {
-  var sanitizedMessage = result.data.text;
-  console.log(sanitizedMessage);
-}).catch(function(error) {
-  var code = error.code;
-  var message = error.message;
-  var details = error.details;
-});*/
+var firebaseConfig = {
+  apiKey: "AIzaSyC6BBIddvML8T57p5wRnM66Bh2iPCLJayM",
+  authDomain: "advanced-dieting.firebaseapp.com",
+  databaseURL: "https://advanced-dieting.firebaseio.com",
+  projectId: "advanced-dieting",
+  storageBucket: "advanced-dieting.appspot.com",
+  messagingSenderId: "1040427605146",
+  appId: "1:1040427605146:web:951764d0785b5292f89323",
+  measurementId: "G-KD9YWTH1CS"
+};
 
-//addMessage();
+firebase.initializeApp(firebaseConfig);
+
+var database = firebase.database();
+var rootUser = database.ref("users");
 
 searchButton.onclick = function() {
   var rawFilters = [];
@@ -107,12 +108,25 @@ async function getInfo(rawItem, debugMode) {
   processInfoJSON(response["data"]);
 }
 
+
 function sendToServer(item) {
+  /*
   var xhttp = new XMLHttpRequest();
   xhttp.open("POST", "/eatHistory", true);
   xhttp.send(JSON.stringify(item));
+  */
+  var userId = firebase.auth().currentUser.uid;
+
+  var postData = item;
+
+  var newPostKey = firebase.database().ref().child('eatHistory').push().key;
+
+  updates['/eatHistory/' + userId + '/' + newPostKey] = postData;
+
+  firebase.database().ref().update(updates);
 }
 
+/*
 function getFromServer() {
   var xhttp = new XMLHttpRequest();
   xhttp.open("GET", "/userPreferences", true);
@@ -122,10 +136,9 @@ function getFromServer() {
       var json = JSON.parse(xhttp.responseText);
       var toLose = json[1];
       var toGain = json[2];
-
     }
   };
-}
+}*/
 
 function searchFor(food) {
   if (food === "fruits") {

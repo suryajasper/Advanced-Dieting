@@ -5,18 +5,17 @@
     <link rel="stylesheet" type="text/css" href="static/css/main.css">
     <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/3.6.3/firebase.js"></script>
   </head>
   <body>
     <div class="center-outside">
       <div class="center-div">
-        <form action="/login" method="post">
+        <form id = "loginform">
           Username<br>
-          <input type="text" name="user"><br>
+          <input id = "email" type="text" name="user"><br>
           Password<br>
-          <input type="password" name="pass">
+          <input id = "password" type="password" name="pass">
           <br><br>
-          <input type="submit" value="Submit">
+          <input id = "submitButton" type="button" value="Submit">
         </form>
         <a href="signup.html">Sign Up</a>
       </div>
@@ -31,6 +30,10 @@
         <div id="loader">Loading...</div>
       </div>
     </div-->
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-database.js"></script>
     <script src = "static/js/fireBase.js"></script>
+    <script src = "static/js/login.js"></script>
   </body>
 </html>

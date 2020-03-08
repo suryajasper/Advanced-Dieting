@@ -1,58 +1,3 @@
-/*(function(){
-
-  var ui = new firebaseui.auth.AuthUI(firebase.auth());
-
-  var uiConfig = {
-    callbacks: {
-      signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-        // User successfully signed in.
-        // Return type determines whether we continue the redirect automatically
-        // or whether we leave that to developer to handle.
-        return true;
-      },
-      uiShown: function() {
-        // The widget is rendered.
-        // Hide the loader.
-        document.getElementById('loader').style.display = 'none';
-      }
-    },
-    // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-    signInFlow: 'popup',
-    signInSuccessUrl: 'main.html',
-    signInOptions: [
-      // Leave the lines as is for the providers you want to offer your users.
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-      firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-      firebase.auth.GithubAuthProvider.PROVIDER_ID,
-      firebase.auth.EmailAuthProvider.PROVIDER_ID,
-      firebase.auth.PhoneAuthProvider.PROVIDER_ID
-    ],
-    // Terms of service url.
-    tosUrl: '404.html',
-    // Privacy policy url.
-    privacyPolicyUrl: '<your-privacy-policy-url>'
-  };
-
-  ui.start('#firebaseui-auth-container', uiConfig);
-
-})()
-*/
-
-var email = document.getElementById("email");
-var username = document.getElementById("username");
-var pword = document.getElementById("pword");
-var gender = document.getElementById("gender");
-var weight = document.getElementById("weight");
-var height = document.getElementById("height");
-var age = document.getElementById("age");
-
-var diseases = document.getElementById("diseases");
-var toReduce = document.getElementById("toReduce");
-var toIncrease = document.getElementById("toIncrease");
-
-var submitButton = document.getElementById("testSubmit");
-
 var firebaseConfig = {
   apiKey: "AIzaSyC6BBIddvML8T57p5wRnM66Bh2iPCLJayM",
   authDomain: "advanced-dieting.firebaseapp.com",
@@ -66,36 +11,21 @@ var firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-var database = firebase.database();
-var rootUser = database.ref("users");
+var email = document.getElementById("email");
+var password = document.getElementById("password");
+var submitButton = document.getElementById("submitButton");
 
-function writeUserData(userId, name, email, imageUrl) {
-  firebase.database().ref('users/' + userId).set({
-    username: name,
-    email: email,
-    profile_picture : imageUrl
+function logInUser() {
+  firebase.auth().signInWithEmailAndPassword(email.value, password.value).then(auth => {
+  }).catch(error => {
+    alert(error.message);
   });
 }
 
+firebase.auth().onAuthStateChanged(user => {
+  if(user) {
+    window.location = 'main.html'; //After successful login, user will be redirected to home.html
+  }
+});
 
-function signUpUser() {
-  firebase.auth().createUserWithEmailAndPassword(email.value, pword.value).then(auth => {
-    rootUser.child(username.value).set({
-      gender: gender.value,
-      weight: weight.value,
-      height: height.value,
-      age: age.value,
-      diseases: diseases.value,
-      to_reduce: toReduce.value,
-      to_increase: toIncrease.value
-    });
-    console.log("aweofij");
-  }).catch(error => {
-    console.log(error.message);
-  })
-}
-
-submitButton.addEventListener('click', (e) => {
-  e.preventDefault();
-  signUpUser();
-})
+submitButton.onclick = logInUser;
