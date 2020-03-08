@@ -6,28 +6,70 @@
   <body>
     <div class="center-outside">
       <div class="center-div">
-        <form action="/signup" method="post">
+        <form id = "form">
           Username<br>
-          <input type="text" name="user" autocomplete="off" required><br>
+          <input type="text" id = "username" name="user" autocomplete="off" required><br>
           Password<br>
-          <input type="password" name="pass" autocomplete="off" pattern=".{6,}" placeholder="Must be 6+ characters" required><br>
+          <input type="password" name="pass" id = "pword" autocomplete="off" pattern=".{6,}" placeholder="Must be 6+ characters" required><br>
           Gender<br>
-          <select name="gender" autocomplete="off" required>
+          <select name="gender" id = "gender" autocomplete="off" required>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="male">Other</option>
           </select>
           <br>
           Weight<br>
-          <input type="number" name="weight" autocomplete="off" min="0" step="1" required><br>
+          <input type="number" id = "weight" name="weight" autocomplete="off" min="0" step="1" required><br>
           Height<br>
-          <input type="number" name="height" autocomplete="off" min="0" step="1" required><br>
+          <input type="number" id = "height" name="height" autocomplete="off" min="0" step="1" required><br>
           Age<br>
-          <input type="number" name="age" autocomplete="off" min="0" step="1" required>
+          <input type="number" id = "age" name="age" autocomplete="off" min="0" step="1" required>
           <br><br>
-          <input type="submit" value="Submit">
+          <h4>Please choose what best describes you</h4><br>
+          Choose from preset diseases<br>
+          <select name="disease" autocomplete="off" required>
+            <option value="None">None</option>
+            <option value="Diabeties">Diabeties</option>
+            <option value="Cancer">Cancer</option>
+          </select><br><br>
+          What do you want to reduce?<br>
+          <select name="macro" autocomplete="off" size="3" multiple>
+            <option value="C">Carbohydrates</option>
+            <option value="S">Sodium</option>
+            <option value="F">Fat</option>
+          </select><br>
+          What do you want to increase?<br>
+          <select name="vitamin" autocomplete="off" multiple>
+            <option value="vA">Vitamin A</option>
+            <option value="vB">Vitamin B</option>
+            <option value="vC">Vitamin C</option>
+            <option value="vD">Vitamin D</option>
+          </select>
+          <br><br>
+          <input id = "testSubmit" type="submit" value="Submit">
         </form>
       </div>
     </div>
+    <script>
+      window.onmousedown = function (e) {
+        var el = e.target;
+        if (el.tagName.toLowerCase() == 'option' && el.parentNode.hasAttribute('multiple')) {
+            e.preventDefault();
+
+            // toggle selection
+            if (el.hasAttribute('selected')) el.removeAttribute('selected');
+            else el.setAttribute('selected', '');
+
+            // hack to correct buggy behavior
+            var select = el.parentNode.cloneNode(true);
+            el.parentNode.parentNode.replaceChild(select, el.parentNode);
+        }
+      }
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-storage.js"></script>
+    <script src = "static/js/fireBase.js"></script>
+    <script src = "static/js/login.js"></script>
   </body>
 </html>
