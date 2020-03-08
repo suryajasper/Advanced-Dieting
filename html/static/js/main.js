@@ -119,9 +119,9 @@ function sendToServer(item) {
 
   var postData = item;
 
-  var newPostKey = firebase.database().ref().child('eatHistory').push().key;
+  var updates = {};
 
-  updates['/eatHistory/' + userId + '/' + newPostKey] = postData;
+  updates['/eatHistory/' + userId + '/' + item.name] = postData;
 
   firebase.database().ref().update(updates);
 }
