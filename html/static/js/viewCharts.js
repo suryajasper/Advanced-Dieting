@@ -1,6 +1,22 @@
 var lineChart = document.getElementById("lineChart")
 var pieChart = document.getElementById("pieChart")
 
+var firebaseConfig = {
+  apiKey: "AIzaSyC6BBIddvML8T57p5wRnM66Bh2iPCLJayM",
+  authDomain: "advanced-dieting.firebaseapp.com",
+  databaseURL: "https://advanced-dieting.firebaseio.com",
+  projectId: "advanced-dieting",
+  storageBucket: "advanced-dieting.appspot.com",
+  messagingSenderId: "1040427605146",
+  appId: "1:1040427605146:web:951764d0785b5292f89323",
+  measurementId: "G-KD9YWTH1CS"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+var database = firebase.database();
+var rootUser = database.ref("users");
+
 function displayPieGraph(values, chart) {
   var ctx = chart.getContext('2d');
   var myChart = new Chart(ctx, {
@@ -73,7 +89,7 @@ function arrayify(json) {
   }
   return temparr2; */
   var arr = [];
-  var food = JSON.parse(json);
+  var food = Object.values(json);
   for (var i = 0; i < food.length; i++) {
     arr.push(food[i]["foodGroup"]);
   }
@@ -86,6 +102,7 @@ function arrayify(json) {
 }
 
 function getFromServer() {
+  /*
   var xhttp = new XMLHttpRequest();
   xhttp.open("GET", "/eatHistory", true);
   xhttp.setRequestHeader("Content-type", "application/json");
@@ -94,8 +111,19 @@ function getFromServer() {
       displayPieGraph(arrayify(xhttp.responseText), pieChart);;
     }
   };
-  xhttp.send();
+  xhttp.send();*/
+  var userId = firebase.auth().currentUser.uid;
+  firebase.database().ref('/eatHistory/' + userId).once('value').then(function(snapshot) {
+    var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+    console.log(snapshot.val());
+    displayPieGraph(arrayify(snapshot.val()), pieChart);
+  });
+
 }
 
-getFromServer();
+firebase.auth().onAuthStateChanged(user => {
+  if(user) {
+    getFromServer();
+  }
+});
 //displayPieGraph([1, 2, 3, 4, 5, 6], pieChart);
