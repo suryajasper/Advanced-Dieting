@@ -123,6 +123,7 @@ function getFromServer() {
 
 firebase.auth().onAuthStateChanged(user => {
   if(user) {
+    showAuth();
     getFromServer();
   }
 });

@@ -12,6 +12,8 @@ var toIncrease = document.getElementById("toIncrease");
 
 var submitButton = document.getElementById("testSubmit");
 
+hideAuth();
+
 var firebaseConfig = {
   apiKey: "AIzaSyC6BBIddvML8T57p5wRnM66Bh2iPCLJayM",
   authDomain: "advanced-dieting.firebaseapp.com",
@@ -31,6 +33,7 @@ var rootUser = database.ref("users");
 function signUpUser() {
   firebase.auth().createUserWithEmailAndPassword(email.value, pword.value).then(auth => {
     console.log("we signed up");
+    showAuth();
   }).catch(error => {
     alert(error.message);
   })

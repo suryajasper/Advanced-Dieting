@@ -32,6 +32,8 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 var rootUser = database.ref("users");
 
+showAuth();
+
 searchButton.onclick = function() {
   var rawFilters = [];
   for (var i = 0; i < filters.length; i++) {

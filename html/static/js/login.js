@@ -24,7 +24,11 @@ function logInUser() {
 
 firebase.auth().onAuthStateChanged(user => {
   if(user) {
+    showAuth();
     window.location = 'main.html'; //After successful login, user will be redirected to home.html
+  }
+  else {
+    hideAuth();
   }
 });
 
