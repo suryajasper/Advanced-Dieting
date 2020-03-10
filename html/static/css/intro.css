@@ -45,7 +45,7 @@ header a {
   color: white;
 }
 header a.left {
-  z-index: 10000;
+  z-index: 11;
   position: absolute;
   text-align: center;
   top: 210px;
@@ -54,7 +54,7 @@ header a.left {
 }
 
 header a.right {
-  z-index: 10000;
+  z-index: 10;
   position: absolute;
   text-align: center;
   top: 210px;
