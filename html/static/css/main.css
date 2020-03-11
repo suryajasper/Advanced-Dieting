@@ -294,6 +294,30 @@ input[type=number]:focus {
   -webkit-transition: 0.5s;
 }
 
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.fileIn {
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+.upload-btn-wrapper input[type=file]:hover {
+  cursor: pointer;
+  background-color: green;
+}
+
 input:focus {
   outline: none;
 }

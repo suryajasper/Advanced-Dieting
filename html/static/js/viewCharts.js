@@ -76,18 +76,6 @@ function freq(val, arr) {
 }
 
 function arrayify(json) {
-  /*
-  var arr = [];
-  var food = JSON.parse(json);
-  for (var i = 0; i < food.length; i++) {
-    arr.push(food[i].foodGroup);
-  }
-  var temparr = ["Dairy", "Protein", "Fruit", "Vegetable", "Grain", "Other"];
-  var temparr2 = []
-  for (var i = 0; i < temparr.length; i++) {
-    temparr2.push(freq(temparr[i], arr));
-  }
-  return temparr2; */
   var arr = [];
   var food = Object.values(json);
   for (var i = 0; i < food.length; i++) {
@@ -100,18 +88,7 @@ function arrayify(json) {
   }
   return temparr2;
 }
-
 function getFromServer() {
-  /*
-  var xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "/eatHistory", true);
-  xhttp.setRequestHeader("Content-type", "application/json");
-  xhttp.onreadystatechange = function() {
-    if (xhttp.readyState>3 && xhttp.status==200) {
-      displayPieGraph(arrayify(xhttp.responseText), pieChart);;
-    }
-  };
-  xhttp.send();*/
   var userId = firebase.auth().currentUser.uid;
   firebase.database().ref('/eatHistory/' + userId).once('value').then(function(snapshot) {
     var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';

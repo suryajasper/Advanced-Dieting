@@ -117,6 +117,8 @@ function sendToServer(item) {
   xhttp.open("POST", "/eatHistory", true);
   xhttp.send(JSON.stringify(item));
   */
+  item.setDate(getDate());
+
   var userId = firebase.auth().currentUser.uid;
 
   var postData = item;
@@ -161,6 +163,23 @@ function searchFor(food) {
   else {
     var json = getInfo(food, true);
   }
+}
+function getDate() {
+  var today = new Date();
+  var _year = parseInt(today.getFullYear());
+  var _month = parseInt(today.getMonth()+1);
+  var _day = parseInt(today.getDate());
+  var _hour = parseInt(today.getHours());
+  var _minute = parseInt(today.getMinutes());
+  var _second = parseInt(today.getSeconds());
+  return {
+    year: _year,
+    month: _month,
+    day: _day,
+    hour: _hour,
+    minute: _minute,
+    second: _second
+  };
 }
 function addToDictionary(food) {
   tempFood = new Food(food["food_name"]);

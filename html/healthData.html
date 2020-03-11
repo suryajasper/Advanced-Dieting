@@ -77,6 +77,14 @@
               </tr>
             </tbody>
           </table>
+          <div class="upload-btn-wrapper">
+            <button id = "fileOut" class="fileIn">
+              <image height = 36 width = 50 src = "static/images/camera.png"></image>
+              Upload a profile picture
+            </button>
+            <input id = "fileInput" type="file" name="myfile" />
+          </div>
+          <br><br>
           <input id = "testSubmit" type="button" value="Update">
         </form>
       </div>
@@ -100,6 +108,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-storage.js"></script>
     <script src = "static/js/fireBase.js"></script>
     <script src = "static/js/healthData.js"></script>
   </body>

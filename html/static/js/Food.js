@@ -14,6 +14,7 @@ class Food {
     this.img = null;
     this.servingQty = 0;
     this.foodGroup = null;
+    this.date = null;
   }
   setFoodGroup(group) {
     this.foodGroup = group;
@@ -53,5 +54,8 @@ class Food {
   }
   setServingQuantity(val) {
     this.servingQty = val;
+  }
+  setDate(val) {
+    this.date = val;
   }
 }
