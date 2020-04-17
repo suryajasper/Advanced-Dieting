@@ -1,3 +1,5 @@
+var socket = io();
+
 var somethingWentWrong = false;
 var parent = document.getElementById("stuff");
 var brandedParent = document.getElementById("branded");
@@ -16,18 +18,7 @@ var searchButton = document.getElementById("searchButton");
 
 var filterTable = document.getElementById("filterTable");
 
-var firebaseConfig = {
-  apiKey: "AIzaSyC6BBIddvML8T57p5wRnM66Bh2iPCLJayM",
-  authDomain: "advanced-dieting.firebaseapp.com",
-  databaseURL: "https://advanced-dieting.firebaseio.com",
-  projectId: "advanced-dieting",
-  storageBucket: "advanced-dieting.appspot.com",
-  messagingSenderId: "1040427605146",
-  appId: "1:1040427605146:web:951764d0785b5292f89323",
-  measurementId: "G-KD9YWTH1CS"
-};
-
-firebase.initializeApp(firebaseConfig);
+initializeFirebase();
 
 var database = firebase.database();
 var rootUser = database.ref("users");
@@ -48,7 +39,7 @@ searchButton.onclick = function() {
 }
 
 function hideOrShowFilters() {
-  console.log("HERE");
+  //console.log("HERE");
   if (filterTable.style.visibility === "collapse") {
     filterTable.style.visibility = "visible";
   }
@@ -75,7 +66,7 @@ async function getInfoSpecific(rawItem, isCommon) {
 }
 
 function processInfoJSON(json) {
-  console.log(json);
+  //console.log(json);
   var common = json["common"];
   var branded = json["branded"];
 
@@ -117,6 +108,7 @@ function sendToServer(item) {
   xhttp.open("POST", "/eatHistory", true);
   xhttp.send(JSON.stringify(item));
   */
+
   item.setDate(getDate());
 
   var userId = firebase.auth().currentUser.uid;
@@ -124,6 +116,8 @@ function sendToServer(item) {
   var postData = item;
 
   var updates = {};
+
+  console.log('sending ' + item.name);
 
   updates['/eatHistory/' + userId + '/' + item.name] = postData;
 
@@ -204,7 +198,7 @@ function addToDictionary(food) {
     realfoodgroup = temparr[intfoodgroup-1];
   }
   tempFood.setFoodGroup(realfoodgroup);
-  console.log(tempFood.foodGroup);
+  //console.log(tempFood.foodGroup);
   foodDict[food["food_name"]] = tempFood;
 }
 function createButton(item_name, item) {
@@ -238,7 +232,7 @@ function createButton(item_name, item) {
 
   eatButton.onclick = function() {
     eatHistory.push(foodDict[item_name]);
-    console.log(foodDict[item_name].foodGroup);
+    //console.log(foodDict[item_name].foodGroup);
     sendToServer(foodDict[item_name]);
   }
   well.appendChild( eatButton );
@@ -273,9 +267,9 @@ function eraseResults() {
 function searched(json, isCommon) {
   if (json != undefined) {
     eraseResults();
-    console.log(json);
+    //console.log(json);
     json = JSON.parse(json);
-    console.log(json);
+    //console.log(json);
     for (var i = 0; i < json["foods"].length; i++) {
       var item_name = json["foods"][i]["food_name"];
       if (json["foods"][i]["photo"]["highres"] != undefined) {
@@ -289,6 +283,6 @@ function searched(json, isCommon) {
         }
       }
     }
-    console.log(foodDict);
+    //console.log(foodDict);
   }
 }

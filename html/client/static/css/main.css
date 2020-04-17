@@ -252,13 +252,6 @@ input[type=button] {
   cursor: pointer;
 }
 
-.cellFormat {
-  margin-left: 2px;
-  margin-top: 2px;
-  margin-bottom: 2px;
-  margin-right: 2px;
-}
-
 input[type=password] {
   background-color:#e3e5e8;
   border: 2px solid #e3e5e8;
@@ -356,4 +349,11 @@ img {
   cursor: pointer;
   color: white;
 	background-image: linear-gradient(to bottom right, #57df7b, #47bf67);
+}
+
+.cellFormat {
+  margin-left: 2px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-right: 2px;
 }
