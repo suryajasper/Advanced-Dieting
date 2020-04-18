@@ -1,10 +1,10 @@
 header {
-  border-radius: 5px;
+  position: absolute;
+	top: 0;
+	left: 0;
+	height: 50px;
+	width: 100%;
   background-color: rgb(72, 122, 59);
-  padding-bottom: 4px;
-  padding-top: 4px;
-  padding-left: 4px;
-  padding-right: 4px;
 }
 header * {
   margin-top: 0px;
@@ -356,4 +356,42 @@ img {
   margin-top: 2px;
   margin-bottom: 2px;
   margin-right: 2px;
+}
+.foodtable {
+  position: relative;
+  width: 100%;
+  border: 3px solid #73AD21;
+}
+#stuff {
+  text-align: justify;
+}
+#stuff:after {
+  content: '';
+    display: inline-block;
+    width: 100%;
+}
+#stuff img {
+  width: 100px;
+  height: 100px;
+}
+
+.nutritionDisplayLeft {
+  height: 100vh;
+  width: 22vw;
+  position: fixed;
+  right: 0;
+  background-color: #73AD21;
+  overflow-x: hidden;
+  margin-top: 50px;
+  top: 0px;
+  padding-left: 10px;
+}
+
+.leftContent {
+  height: 100vh;
+  width: 78vw;
+  position: fixed;
+  left: 0;
+  top: 0px;
+  margin-top: 50px;
 }

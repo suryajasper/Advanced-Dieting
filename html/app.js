@@ -5,14 +5,6 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 5000;
 
-io.on('connection', function(socket){
-  getFoodParam();
-})
-
-http.listen(port, function(){
-  console.log('listening on port' + port.toString());
-});
-
 function getFoodParam() {
   var unirest = require("unirest");
 
@@ -23,7 +15,7 @@ function getFoodParam() {
   	"minCarbs": "0",
   	"minProtein": "0",
   	"offset": "0",
-  	"number": "10",
+  	"number": "5",
   	"maxCalories": "250",
   	"maxCarbs": "100",
   	"maxFat": "20",
@@ -95,11 +87,21 @@ function getFoodParam() {
   	"maxZinc": "50",
   	"limitLicense": "false"
   });
-  req.end(function (res) {
+
+  return req;
+}
+
+io.on('connection', function(socket){
+  var promise = getFoodParam();
+  promise.end(function (res) {
   	if (res.error) {
       console.log(res.error);
     }
-
-  	console.log(res.body);
+  	socket.emit('recommendations', res.body);
   });
-}
+
+})
+
+http.listen(port, function(){
+  console.log('listening on port' + port.toString());
+});
