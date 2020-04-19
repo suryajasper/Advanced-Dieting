@@ -91,13 +91,56 @@ function getFoodParam() {
   return req;
 }
 
+function visualizeNutrients(id) {
+  var unirest = require("unirest");
+
+  var req = unirest("GET", "https://api.spoonacular.com/recipes/" + id.toString() + "/nutritionWidget");
+
+  req.query({
+    "apiKey": "bc240f5675d94b39b9a096f5a949a9d7",
+    "defaultCss": true
+  });
+
+  return req;
+}
+
+function visualizeIngredients(id) {
+  var unirest = require("unirest");
+
+  var req = unirest("GET", "https://api.spoonacular.com/recipes/" + id.toString() + "/ingredientWidget");
+
+  req.query({
+    "defaultCss": true
+  });
+
+  return req;
+}
+
 io.on('connection', function(socket){
   var promise = getFoodParam();
   promise.end(function (res) {
-  	if (res.error) {
-      console.log(res.error);
-    }
+  	if (res.error) {console.log(res.error);}
   	socket.emit('recommendations', res.body);
+  });
+
+  socket.on('displayFood', function(foodname) {
+    socket.emit('redirect', '/foodDetails.html' + '?food=' + foodname);
+  });
+
+  socket.on('visualizeIngredients', function(id) {
+    var newP = visualizeIngredients(id);
+    newP.end(function(res) {
+      if (res.error) {console.log(res.error);}
+      socket.emit('ingredients', res.body);
+    })
+  });
+
+  socket.on('visualizeNutrients', function(id) {
+    var newP = visualizeNutrients(id);
+    newP.end(function(res) {
+      if (res.error) {console.log(res.error);}
+      socket.emit('nutrients', res.body);
+    })
   });
 
 })

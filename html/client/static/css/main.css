@@ -1,4 +1,4 @@
-header {
+header:not(#nutritionFacts) {
   position: absolute;
 	top: 0;
 	left: 0;
@@ -6,19 +6,19 @@ header {
 	width: 100%;
   background-color: rgb(72, 122, 59);
 }
-header * {
+header:not(#nutritionFacts) * {
   margin-top: 0px;
   margin-bottom: 0px;
   margin-left: 0px;
   margin-right: 0px;
 }
-header h1 {
+header:not(#nutritionFacts) h1 {
   font-family: serif;
   background: -webkit-linear-gradient(#00ab1b, #6cf03e);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-header a {
+header:not(#nutritionFacts) a {
   display: inline-block;
   color: white;
 }

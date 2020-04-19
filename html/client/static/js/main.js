@@ -197,6 +197,10 @@ function processJSON(json) {
       }
     }
 
+    img.ondblclick = function() {
+      socket.emit('displayFood', food.id);
+    }
+
     parent.appendChild(img);
   })(food);
 
@@ -210,3 +214,7 @@ function processJSON(json) {
 }
 
 socket.on('recommendations', processJSON);
+
+socket.on('redirect', function(location) {
+  window.location.href = location;
+});
