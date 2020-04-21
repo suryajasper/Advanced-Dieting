@@ -1,9 +1,26 @@
+var admin = require("firebase-admin");
+
 var express = require('express');
 var app = express();
 app.use(express.static(__dirname + '/client'));
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 5000;
+
+var admin = require('firebase-admin');
+
+var serviceAccount = require("/Users/suryajasper2004/Downloads/service-account-file.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://advanced-dieting.firebaseio.com"
+});
+
+var database = admin.database();
+
+var refUsers = database.ref("users");
+var refEatHistory = database.ref("eatHistory");
+var refAllFood = database.ref("allFoodData");
 
 function getFoodParam() {
   var unirest = require("unirest");
@@ -123,8 +140,11 @@ io.on('connection', function(socket){
   	socket.emit('recommendations', res.body);
   });
 
-  socket.on('displayFood', function(foodname) {
-    socket.emit('redirect', '/foodDetails.html' + '?food=' + foodname);
+  socket.on('displayFood', function(food) {
+    socket.emit('redirect', '/foodDetails.html' + '?id=' + food.id + '&name=' + food.title);
+    var update = {};
+    update[food.id] = food;
+    refAllFood.update(update);
   });
 
   socket.on('visualizeIngredients', function(id) {
@@ -143,7 +163,20 @@ io.on('connection', function(socket){
     })
   });
 
-})
+  socket.on('addToEatHistory', function(userID, foodID) {
+    refAllFood.on("value", function(snapshot) {
+      var allFoods = snapshot.val();
+      var update = {};
+      update[foodID] = allFoods[foodID];
+      var actUpdate = {};
+      actUpdate[userID] = update;
+      refEatHistory.update(actUpdate);
+    }, function (error) {
+      console.log("Reading eat history failed: " + error.code);
+    });
+  });
+
+});
 
 http.listen(port, function(){
   console.log('listening on port' + port.toString());
