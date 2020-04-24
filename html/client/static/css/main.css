@@ -75,6 +75,18 @@ header:not(#nutritionFacts) a {
   text-align: center;
   display: inline-block;
 }
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+.popup {
+  border: 3px solid black;
+  border-radius: 4px;
+  z-index: 1000;
+}
 img
 {
   max-width: 150px;
@@ -241,6 +253,7 @@ button {
   padding: 12px 20px;
   font-size:14px;
   cursor: pointer;
+  margin-top: 8px;
 }
 
 input[type=button] {

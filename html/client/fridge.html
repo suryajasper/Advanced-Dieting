@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Advanced Dieting</title>
+    <title>Fridge</title>
     <meta charset = "utf-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://www.google.com/jsapi"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -29,25 +29,27 @@
       </div>
     </header>
     <script src = "static/js/headerSettings.js"></script>
-    <div id = "rightBar" class = "nutritionDisplayLeft">
-
+    <div class = "center-outside">
+      <button onclick = "addFood()" style = "margin-top: 55px;">Add Food</button>
     </div>
-    <div class = "leftContent">
-      <div style = "margin: 10px;">
-        <div style = "width: 100%;">
-          <h3 style = "display: inline-block">Search for a specific item</h3>
-          <span class="tab-2"></span>
-          <span class="tab-2"></span>
-          <input id = "itemIn" placeholder = "name of item" style = "display: inline-block; width: 300" type = "text"></input>
-          <a class = "glass" id = "searchButton">Search</a>
-          <a class = "glass" id = "viewCharts" href = "/charts.html">View Charts</a>
-          <a class = "glass" id = "foodstorage" href = "/fridge.html">Manage Fridge</a>
-          <input style = "display: inline-block;" type="range" min="75" max="200" value="120" class="slider" id="imgSize">
-          <br>
+    <div id = "supplyDrop" style = "margin-top: 10px;">
+    </div>
+    <div id = "popup" style = "display: none;" class = "centered">
+      <div class = "popup">
+        <div class = "center-outside">
+          <div style = "margin-top: 0px;" class = "center-div">
+            <input type = "number" id = "amountIn" placeholder = "enter amount"></input>
+            <button id = "operationButton">Submit</button>
+          </div>
         </div>
-        <div class = "foodtable">
-          <div id = "stuff" style = "margin: 10px;">
-
+      </div>
+    </div>
+    <div id = "addFoodPopup" style = "display: none;" class = "centered">
+      <div class = "popup">
+        <div class = "center-outside">
+          <div style = "margin-top: 0px;" class = "center-div">
+            <input type = "text" id = "foodNameIn" placeholder = "name of food"></input>
+            <button id = "enterFoodButton">Add to fridge</button>
           </div>
         </div>
       </div>
@@ -58,7 +60,6 @@
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-database.js"></script>
 
     <script src = "static/js/fireBase.js"></script>
-    <script src = "static/js/Food.js"></script>
-    <script src = "static/js/main.js"></script>
+    <script src = "static/js/fridge.js"></script>
   </body>
 </html>
