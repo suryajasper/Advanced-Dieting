@@ -21,6 +21,7 @@ var database = admin.database();
 var refUsers = database.ref("users");
 var refEatHistory = database.ref("eatHistory");
 var refAllFood = database.ref("allFoodData");
+var refIngredients = database.ref('ingredients');
 
 function getFoodParam() {
   var unirest = require("unirest");
@@ -108,6 +109,19 @@ function getFoodParam() {
   return req;
 }
 
+function searchIngredients(ingredient) {
+  var unirest = require("unirest");
+
+  var req = unirest("GET", "https://api.spoonacular.com/food/ingredients/autocomplete?query=" + ingredient + "&number=7");
+
+  req.query({
+    "apiKey": "bc240f5675d94b39b9a096f5a949a9d7",
+    "defaultCss": true
+  });
+
+  return req;
+}
+
 function visualizeNutrients(id) {
   var unirest = require("unirest");
 
@@ -175,6 +189,33 @@ io.on('connection', function(socket){
       console.log("Reading eat history failed: " + error.code);
     });
   });
+
+  socket.on('find ingredients', function(ing) {
+    var newP = searchIngredients(ing);
+    newP.end(function(res) {
+      if (res.error) {console.log(res.error);}
+      socket.emit('ingredientsRes', res.body);
+    });
+  })
+
+  socket.on('save ingredient', function(userID, ing) {
+    var update = {};
+    update[ing.name] = ing;
+    var actUpdate = {};
+    actUpdate[userID] = update;
+    refIngredients.update(actUpdate);
+  })
+
+  socket.on('get stored foods', function(userID) {
+    refIngredients.on("value", function(snapshot) {
+      console.log(snapshot.val());
+      if (snapshot.val() === undefined || snapshot.val() === null) {
+        socket.emit('display stored foods', null);
+      } else {
+        socket.emit('display stored foods', snapshot.val()[userID]);
+      }
+    })
+  })
 
 });
 

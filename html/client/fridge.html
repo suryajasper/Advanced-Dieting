@@ -11,6 +11,18 @@
   </head>
   <script src="/socket.io/socket.io.js"></script>
   <link rel="stylesheet" href="static/css/main.css">
+  <style>
+    body {
+      background-size: cover;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      background-color: rgb(161, 184, 180);
+      background-image: url(static/images/fridge.png);
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+    }
+  </style>
   <body>
     <header>
       <h1 style = "display: inline-block;">Advanced Dieting</h1>
@@ -49,7 +61,9 @@
         <div class = "center-outside">
           <div style = "margin-top: 0px;" class = "center-div">
             <input type = "text" id = "foodNameIn" placeholder = "name of food"></input>
-            <button id = "enterFoodButton">Add to fridge</button>
+            <button id = "enterFoodButton">Search</button>
+            <div id = "ingredientsResponse">
+            </div>
           </div>
         </div>
       </div>

@@ -1,6 +1,5 @@
-/*var socket = io();
+var socket = io();
 initializeFirebase();
-showAuth();*/
 
 function makeOperationButton(operation, qtyDis) {
   var button = document.createElement('a');
@@ -76,17 +75,62 @@ function addFridgeItem(name, imageSRC, qty, unit) {
 }
 
 function addFood() {
+  $('#ingredientsResponse').empty();
   document.getElementById('addFoodPopup').style.display = "block";
   document.getElementById('enterFoodButton').onclick = function() {
+    $('#ingredientsResponse').empty();
     var foodIn = document.getElementById('foodNameIn');
-    addFridgeItem(foodNameIn.value, 'https://assets.fireside.fm/file/fireside-images/podcasts/images/b/bc7f1faf-8aad-4135-bb12-83a8af679756/cover_small.jpg', 5, 'g');
-    document.getElementById('addFoodPopup').style.display = "none";
+    socket.emit('find ingredients', foodIn.value);
+    socket.on('ingredientsRes', function(res) {
+      console.log(res);
+      for (var ing of res) (function(ing) {
+        var ingDiv = document.createElement('div');
+        ingDiv.style.display = 'inline-block';
+        ingDiv.style.margin = '8px';
+
+        var ingIMG = document.createElement('img');
+        ingIMG.src = 'https://spoonacular.com/cdn/ingredients_100x100/' + ing.image;
+        ingIMG.style.display = 'inline-block';
+        ingIMG.style.marginRight = '8px';
+        ingDiv.appendChild(ingIMG);
+
+        var textAndButtonDiv = document.createElement('div');
+        textAndButtonDiv.style.display = 'inline-block';
+
+        var ingText = document.createElement('p');
+        ingText.style.display = 'block';
+        ingText.style.marginBottom = '6px';
+        ingText.innerHTML= ing.name;
+
+        var addToFridgeButton = document.createElement('button');
+        addToFridgeButton.style.display = 'block';
+        addToFridgeButton.innerHTML = 'Add To Fridge';
+        addToFridgeButton.onclick = function() {
+          var imageLink ='https://spoonacular.com/cdn/ingredients_100x100/' + ing.image;
+          socket.emit('save ingredient', firebase.auth().currentUser, {id: ing.id, name: ing.name, image: imageLink, qty: 5, unit: 'g'});
+          addFridgeItem(ing.name, imageLink, 5, 'g');
+          document.getElementById('addFoodPopup').style.display = "none";
+        }
+
+        textAndButtonDiv.appendChild(ingText);
+        textAndButtonDiv.appendChild(addToFridgeButton);
+        ingDiv.appendChild(textAndButtonDiv);
+        document.getElementById('ingredientsResponse').appendChild(ingDiv);
+      })(ing)
+    })
   }
 }
 
-/*socket.emit('get stored foods');
-socket.on('display stored foods', function(food) {
+firebase.auth().onAuthStateChanged(user => {
+  showAuth();
+  socket.emit('get stored foods', firebase.auth().currentUser);
+  socket.on('display stored foods', function(food) {
+    if (food != null) {
+      for (foodIng of food) {
+        addFridgeItem(foodIng.name, foodIng.image, foodIng.qty, foodIng.unit);
+      }
+    }
+  });
+})
 
-});
-*/
 // Demo: addFridgeItem('surya', 'https://assets.fireside.fm/file/fireside-images/podcasts/images/b/bc7f1faf-8aad-4135-bb12-83a8af679756/cover_small.jpg', 5, 'g');
