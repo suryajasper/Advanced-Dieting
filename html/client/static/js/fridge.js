@@ -1,6 +1,8 @@
 var socket = io();
 initializeFirebase();
 
+var initialized = false;
+
 function makeOperationButton(operation, qtyDis) {
   var button = document.createElement('a');
   button.style.width = "25px";
@@ -106,8 +108,9 @@ function addFood() {
         addToFridgeButton.style.display = 'block';
         addToFridgeButton.innerHTML = 'Add To Fridge';
         addToFridgeButton.onclick = function() {
+          console.log('adding ' + ing.name + ' to fridge');
           var imageLink ='https://spoonacular.com/cdn/ingredients_100x100/' + ing.image;
-          socket.emit('save ingredient', firebase.auth().currentUser, {id: ing.id, name: ing.name, image: imageLink, qty: 5, unit: 'g'});
+          socket.emit('save ingredient', firebase.auth().currentUser.uid, {id: ing.id, name: ing.name, image: imageLink, qty: 5, unit: 'g'});
           addFridgeItem(ing.name, imageLink, 5, 'g');
           document.getElementById('addFoodPopup').style.display = "none";
         }
@@ -122,15 +125,19 @@ function addFood() {
 }
 
 firebase.auth().onAuthStateChanged(user => {
-  showAuth();
-  socket.emit('get stored foods', firebase.auth().currentUser);
-  socket.on('display stored foods', function(food) {
-    if (food != null) {
-      for (foodIng of food) {
+  if (!initialized) {
+    initialized = true;
+    console.log(initialized);
+    showAuth();
+    socket.emit('get stored foods', user.uid);
+    socket.on('display stored foods', function(food) {
+      console.log(food);
+      for (var i = 0; i < Object.keys(food).length; i++) {
+        var foodIng = food[Object.keys(food)[i]];
         addFridgeItem(foodIng.name, foodIng.image, foodIng.qty, foodIng.unit);
       }
-    }
-  });
+    });
+  }
 })
 
 // Demo: addFridgeItem('surya', 'https://assets.fireside.fm/file/fireside-images/podcasts/images/b/bc7f1faf-8aad-4135-bb12-83a8af679756/cover_small.jpg', 5, 'g');

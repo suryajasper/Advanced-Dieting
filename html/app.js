@@ -201,17 +201,15 @@ io.on('connection', function(socket){
   socket.on('save ingredient', function(userID, ing) {
     var update = {};
     update[ing.name] = ing;
-    var actUpdate = {};
-    actUpdate[userID] = update;
-    refIngredients.update(actUpdate);
+    //console.log(actUpdate);
+    refIngredients.child(userID).update(update);
   })
 
   socket.on('get stored foods', function(userID) {
-    refIngredients.on("value", function(snapshot) {
-      console.log(snapshot.val());
-      if (snapshot.val() === undefined || snapshot.val() === null) {
-        socket.emit('display stored foods', null);
-      } else {
+    refIngredients.once("value", function(snapshot) {
+      console.log('loading foods');
+      if (!(snapshot.val() === undefined || snapshot.val() === null)) {
+        //console.log(snapshot.val()[userID]);
         socket.emit('display stored foods', snapshot.val()[userID]);
       }
     })
