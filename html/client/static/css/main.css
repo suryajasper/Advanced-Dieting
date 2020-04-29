@@ -333,13 +333,18 @@ select {
   background-color:#e3e5e8;
   border: 2px solid #e3e5e8;
   border-radius: 4px;
-  padding: 12px 20px;
+  padding: 5px;
   font-size:14px;
 }
 
 select:focus {
   outline: none;
 }
+
+option:focus {
+  background-color: rgb(23, 80, 0);
+}
+
 img {
   cursor: pointer;
 }
@@ -408,4 +413,30 @@ img {
   left: 0;
   top: 0px;
   margin-top: 50px;
+}
+
+#filterToggle {
+  margin-left: 4px;
+  color: #ffffff;
+  font-size: 1em;
+  background-color: rgb(100, 149, 35);
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  -webkit-transition: 0.5s;
+}
+
+#filterToggle:hover {
+  background-color: rgb(121, 194, 24);
+  border-radius: 6px;
+  -webkit-transition: 0.5s;
+}
+
+.inline-elements *:not(option){
+  display: inline-block;
+  margin-right: 5px;
+  margin-left: 5px;
 }

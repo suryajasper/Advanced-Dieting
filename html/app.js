@@ -109,6 +109,116 @@ function getFoodParam() {
   return req;
 }
 
+function searchFood(name, query) {
+  var unirest = require("unirest");
+  var req = unirest("GET", "https://api.spoonacular.com/recipes/searchComplex");
+  var toQuery = {
+    "apiKey": "bc240f5675d94b39b9a096f5a949a9d7",
+  	"query": name,
+  	"minCalories": "150",
+  	"maxCalories": "1500",
+  	"minFat": "5",
+  	"maxFat": "100",
+  	"minProtein": "5",
+  	"maxProtein": "100",
+  	"minCarbs": "5",
+  	"maxCarbs": "100",
+  	"minAlcohol": "0",
+  	"maxAlcohol": "1000",
+  	"minCaffeine": "0",
+  	"maxCaffeine": "1000",
+  	"minCopper": "0",
+  	"maxCopper": "1000",
+  	"minCalcium": "0",
+  	"maxCalcium": "1000",
+  	"minCholine": "0",
+  	"maxCholine": "1000",
+  	"minCholesterol": "0",
+  	"maxCholesterol": "1000",
+  	"minFluoride": "0",
+  	"maxFluoride": "1000",
+  	"minSaturatedFat": "0",
+  	"maxSaturatedFat": "50",
+  	"minVitaminA": "0",
+  	"maxVitaminA": "5000",
+  	"minVitaminC": "0",
+  	"maxVitaminC": "1000",
+  	"minVitaminD": "0",
+  	"maxVitaminD": "1000",
+  	"minVitaminE": "0",
+  	"maxVitaminE": "1000",
+  	"minVitaminK": "0",
+  	"maxVitaminK": "1000",
+  	"minVitaminB1": "0",
+  	"maxVitaminB1": "1000",
+  	"minVitaminB2": "0",
+  	"maxVitaminB2": "1000",
+  	"minVitaminB3": "0",
+  	"maxVitaminB3": "1000",
+  	"minVitaminB5": "0",
+  	"maxVitaminB5": "1000",
+  	"minVitaminB6": "0",
+  	"maxVitaminB6": "1000",
+  	"minVitaminB12": "0",
+  	"maxVitaminB12": "1000",
+  	"minFiber": "0",
+  	"maxFiber": "1000",
+  	"minFolate": "0",
+  	"maxFolate": "1000",
+  	"minFolicAcid": "0",
+  	"maxFolicAcid": "1000",
+  	"minIodine": "0",
+  	"maxIodine": "1000",
+  	"minIron": "0",
+  	"maxIron": "1000",
+  	"minMagnesium": "0",
+  	"maxMagnesium": "1000",
+  	"minManganese": "0",
+  	"maxManganese": "1000",
+  	"minPhosphorus": "0",
+  	"maxPhosphorus": "1000",
+  	"minPotassium": "0",
+  	"maxPotassium": "1000",
+  	"minSelenium": "0",
+  	"maxSelenium": "1000",
+  	"minSodium": "0",
+  	"maxSodium": "1000",
+  	"minSugar": "0",
+  	"maxSugar": "1000",
+  	"minZinc": "0",
+  	"maxZinc": "1000",
+  	"equipment": "pan",
+  	"limitLicense": "false",
+  	"offset": "0",
+  	"number": "4"
+  };
+  for (var key of Object.keys(query)) {
+    toQuery[key] = query[key];
+  }
+  req.query(toQuery);
+  return req;
+}
+
+function getByIngredients(ingredients) {
+  var ingString = ingredients[0];
+  for (var i = 0; i < ingredients.length-1; i++) {
+    ingString += ',+' + ingredients[i];
+  }
+
+  var unirest = require("unirest");
+
+  var req = unirest("GET", "https://api.spoonacular.com/recipes/findByIngredients?ingredients=apples,+flour,+sugar&number=2");
+  req.query({
+    "apiKey": "bc240f5675d94b39b9a096f5a949a9d7",
+    'number': '20',
+    'ranking': '2',
+    'limitLicense': 'false',
+    'ingredients': ingString
+  });
+
+  return req;
+}
+
 function searchIngredients(ingredient) {
   var unirest = require("unirest");
 
@@ -148,11 +258,11 @@ function visualizeIngredients(id) {
 }
 
 io.on('connection', function(socket){
-  var promise = getFoodParam();
+  /*var promise = getFoodParam();
   promise.end(function (res) {
   	if (res.error) {console.log(res.error);}
   	socket.emit('recommendations', res.body);
-  });
+  });*/
 
   socket.on('displayFood', function(food) {
     socket.emit('redirect', '/foodDetails.html' + '?id=' + food.id + '&name=' + food.title);
@@ -198,6 +308,27 @@ io.on('connection', function(socket){
     });
   })
 
+  socket.on('find ingredients arr', function(ings) {
+    var promises = [];
+    for (var ing of ings) {
+      var newP = searchIngredients(ing);
+      newP.end(function(res) {
+        if (res.error) {console.log(res.error);}
+        socket.emit('ingredientsRes', res.body);
+      });
+      promises.push(newP);
+    }
+    Promise.all(promises).then(function(values) {
+      console.log('here');
+      console.log(values);
+      var toReturn = [];
+      for (var value of values) {
+        toReturn.push(JSON.parse(value[0].raw_body));
+      }
+      socket.emit('ingredientsArrRes', toReturn);
+    });
+  })
+
   socket.on('save ingredient', function(userID, ing) {
     var update = {};
     update[ing.name] = ing;
@@ -212,6 +343,22 @@ io.on('connection', function(socket){
         //console.log(snapshot.val()[userID]);
         socket.emit('display stored foods', snapshot.val()[userID]);
       }
+    })
+  })
+
+  socket.on('get by ingredients', function(ingredients) {
+    var ingProm = getByIngredients(ingredients);
+    ingProm.end(function(res) {
+      if (res.error) {console.log(res.error);}
+      socket.emit('getByIngredientsRes', res.body);
+    })
+  });
+
+  socket.on('search', function(name, query) {
+    var searchProm = searchFood(name, query);
+    searchProm.end(function(res) {
+      if (res.error) {console.log(res.error);}
+      socket.emit('searchRes', res.body.results);
     })
   })
 

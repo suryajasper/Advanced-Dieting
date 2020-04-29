@@ -5,28 +5,41 @@ var nutritionDisplay = document.getElementById('rightBar');
 var somethingWentWrong = false;
 var parent = document.getElementById("stuff");
 
-var filters = [document.getElementById("fruits"), document.getElementById("vegetables"),document.getElementById("grains"),document.getElementById("dairy"),document.getElementById("meat/beans")];
-
 var itemIn = document.getElementById("itemIn");
 var searchButton = document.getElementById("searchButton");
+var filters = document.getElementById('filters');
+
+var filtArr = {"meal": ['main course','side dish','dessert','appetizer','salad','bread','breakfast','soup','beverage','sauce','marinade','fingerfood','snack','drink'],
+             "cuisine": ['African','American','British','Cajun','Caribbean','Chinese','Eastern European','European','French','German','Greek','Indian','Irish','Italian','Japanese','Jewish','Korean','Latin American','Mediterranean','Mexican','Middle Eastern','Nordic','Southern','Spanish','Thai','Vietnamese'],
+             "intolerance": ['Dairy','Egg','Gluten','Grain','Peanut','Seafood','Sesame','Shellfish','Soy','Sulfite','Tree Nut','Wheat'],
+             "diet": ['Gluten Free', 'Ketogenic', 'Vegetarian', 'Lacto-Vegetarian', 'Ovo-Vegetarian', 'Vegan', 'Pescetarian', 'Paleo', 'Primal', 'Whole30']};
+
+function addOptions(select_id, options) {
+  var defaultOption = document.createElement('option');
+  defaultOption.innerHTML = 'all';
+  defaultOption.value = 'all';
+  document.getElementById(select_id).appendChild(defaultOption);
+  for (var optionText of options) {
+    var newOption = document.createElement('option');
+    newOption.innerHTML = optionText;
+    newOption.value = optionText;
+    document.getElementById(select_id).appendChild(newOption);
+  }
+}
+
+for (var currFilter of Object.keys(filtArr)) {
+  addOptions(currFilter, filtArr[currFilter]);
+}
 
 initializeFirebase();
 showAuth();
 
-function hideOrShowFilters() {
-  if (filterTable.style.visibility === "collapse") {
-    filterTable.style.visibility = "visible";
-  }
-  else {
-    filterTable.style.visibility = "collapse";
-  }
-}
-
 function eraseResults() {
-  $('stuff').empty();
+  $('#stuff').empty();
 }
 
 function processJSON(json) {
+  eraseResults();
   var slider = document.getElementById('imgSize');
 
   try { json = JSON.parse(json); }
@@ -37,7 +50,7 @@ function processJSON(json) {
     img.classList.add('image')
     img.src = food.image;
 
-    img.onclick = function() {
+    /*img.onclick = function() {
       $('#rightBar').empty();
       var title = document.createElement('h2');
       title.innerHTML = food.title;
@@ -52,9 +65,9 @@ function processJSON(json) {
           nutritionDisplay.appendChild(p);
         }
       }
-    }
+    }*/
 
-    img.ondblclick = function() {
+    img.onclick = function() {
       socket.emit('displayFood', food);
     }
 
@@ -72,6 +85,36 @@ function processJSON(json) {
 
 socket.on('recommendations', processJSON);
 
+socket.on('getByIngredientsRes', processJSON);
+
 socket.on('redirect', function(location) {
   window.location.href = location;
 });
+
+firebase.auth().onAuthStateChanged(function(user) {
+  document.getElementById('whatcanimake').onclick = function(e) {
+    e.preventDefault();
+    socket.emit('get stored foods', user.uid);
+    socket.on('display stored foods', function(foods) {
+      socket.emit('get by ingredients', Object.keys(foods));
+    })
+  }
+})
+
+document.getElementById('searchButton').onclick = function(e) {
+  e.preventDefault();
+  var filterDict = {};
+  for (var currFilter of Object.keys(filtArr)) {
+    var filtVal = document.getElementById(currFilter).value;
+    if (filtVal !== 'all') {
+      filterDict[currFilter] = filtVal;
+    }
+  }
+  console.log(filterDict);
+  socket.emit('search', itemIn.value, filterDict);
+}
+
+socket.on('searchRes', function(res) {
+  console.log(res);
+  processJSON(res);
+})

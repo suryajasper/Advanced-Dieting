@@ -82,45 +82,61 @@ function addFood() {
   document.getElementById('enterFoodButton').onclick = function() {
     $('#ingredientsResponse').empty();
     var foodIn = document.getElementById('foodNameIn');
-    socket.emit('find ingredients', foodIn.value);
-    socket.on('ingredientsRes', function(res) {
-      console.log(res);
-      for (var ing of res) (function(ing) {
-        var ingDiv = document.createElement('div');
-        ingDiv.style.display = 'inline-block';
-        ingDiv.style.margin = '8px';
-
-        var ingIMG = document.createElement('img');
-        ingIMG.src = 'https://spoonacular.com/cdn/ingredients_100x100/' + ing.image;
-        ingIMG.style.display = 'inline-block';
-        ingIMG.style.marginRight = '8px';
-        ingDiv.appendChild(ingIMG);
-
-        var textAndButtonDiv = document.createElement('div');
-        textAndButtonDiv.style.display = 'inline-block';
-
-        var ingText = document.createElement('p');
-        ingText.style.display = 'block';
-        ingText.style.marginBottom = '6px';
-        ingText.innerHTML= ing.name;
-
-        var addToFridgeButton = document.createElement('button');
-        addToFridgeButton.style.display = 'block';
-        addToFridgeButton.innerHTML = 'Add To Fridge';
-        addToFridgeButton.onclick = function() {
+    if (foodIn.value.substring(0,1) === '/') {
+      var foodInProcessed = foodIn.value.substring(1).split(',');
+      socket.emit('find ingredients arr', foodInProcessed);
+      socket.on('ingredientsArrRes', function(res) {
+        console.log(res);
+        for (var i = 0; i < res.length; i++) (function(i) {
+          var ing = res[i][0];
           console.log('adding ' + ing.name + ' to fridge');
           var imageLink ='https://spoonacular.com/cdn/ingredients_100x100/' + ing.image;
           socket.emit('save ingredient', firebase.auth().currentUser.uid, {id: ing.id, name: ing.name, image: imageLink, qty: 5, unit: 'g'});
           addFridgeItem(ing.name, imageLink, 5, 'g');
           document.getElementById('addFoodPopup').style.display = "none";
-        }
+        })(i)
+      })
+    } else {
+      socket.emit('find ingredients', foodIn.value);
+      socket.on('ingredientsRes', function(res) {
+        console.log(res);
+        for (var ing of res) (function(ing) {
+          var ingDiv = document.createElement('div');
+          ingDiv.style.display = 'inline-block';
+          ingDiv.style.margin = '8px';
 
-        textAndButtonDiv.appendChild(ingText);
-        textAndButtonDiv.appendChild(addToFridgeButton);
-        ingDiv.appendChild(textAndButtonDiv);
-        document.getElementById('ingredientsResponse').appendChild(ingDiv);
-      })(ing)
-    })
+          var ingIMG = document.createElement('img');
+          ingIMG.src = 'https://spoonacular.com/cdn/ingredients_100x100/' + ing.image;
+          ingIMG.style.display = 'inline-block';
+          ingIMG.style.marginRight = '8px';
+          ingDiv.appendChild(ingIMG);
+
+          var textAndButtonDiv = document.createElement('div');
+          textAndButtonDiv.style.display = 'inline-block';
+
+          var ingText = document.createElement('p');
+          ingText.style.display = 'block';
+          ingText.style.marginBottom = '6px';
+          ingText.innerHTML= ing.name;
+
+          var addToFridgeButton = document.createElement('button');
+          addToFridgeButton.style.display = 'block';
+          addToFridgeButton.innerHTML = 'Add To Fridge';
+          addToFridgeButton.onclick = function() {
+            console.log('adding ' + ing.name + ' to fridge');
+            var imageLink ='https://spoonacular.com/cdn/ingredients_100x100/' + ing.image;
+            socket.emit('save ingredient', firebase.auth().currentUser.uid, {id: ing.id, name: ing.name, image: imageLink, qty: 5, unit: 'g'});
+            addFridgeItem(ing.name, imageLink, 5, 'g');
+            document.getElementById('addFoodPopup').style.display = "none";
+          }
+
+          textAndButtonDiv.appendChild(ingText);
+          textAndButtonDiv.appendChild(addToFridgeButton);
+          ingDiv.appendChild(textAndButtonDiv);
+          document.getElementById('ingredientsResponse').appendChild(ingDiv);
+        })(ing)
+      })
+    }
   }
 }
 

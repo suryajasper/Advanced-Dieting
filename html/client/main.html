@@ -29,26 +29,51 @@
       </div>
     </header>
     <script src = "static/js/headerSettings.js"></script>
-    <div id = "rightBar" class = "nutritionDisplayLeft">
-
-    </div>
-    <div class = "leftContent">
+    <div style = "margin-top: 55px;">
       <div style = "margin: 10px;">
         <div style = "width: 100%;">
-          <h3 style = "display: inline-block">Search for a specific item</h3>
           <span class="tab-2"></span>
           <span class="tab-2"></span>
           <input id = "itemIn" placeholder = "name of item" style = "display: inline-block; width: 300" type = "text"></input>
+          <a id = "filterToggle">Advanced</a>
           <a class = "glass" id = "searchButton">Search</a>
           <a class = "glass" id = "viewCharts" href = "/charts.html">View Charts</a>
           <a class = "glass" id = "foodstorage" href = "/fridge.html">Manage Fridge</a>
+          <a class = "glass" id = "whatcanimake">What can I make?</a>
           <input style = "display: inline-block;" type="range" min="75" max="200" value="120" class="slider" id="imgSize">
           <br>
         </div>
+        <div id = "filters" style = "display: none; padding: 10px;">
+          <fieldset style = "margin-top: 0px; padding-top: 0px;">
+            <legend>
+              Filters
+            </legend>
+            <div class = "inline-elements">
+              cuisines
+              <select id = "cuisine">
+              </select>
+              mealTypes
+              <select id = "meal">
+              </select>
+              intolerances
+              <select id = "intolerance">
+              </select>
+              diets
+              <select id = "diet">
+              </select>
+            </div>
+          </fieldset>
+        </div>
+        <script>
+          var filters = document.getElementById('filters');
+          document.getElementById('filterToggle').onclick = function(e) {
+            e.preventDefault();
+            console.log("here");
+            filters.style.display = (filters.style.display === 'none') ? 'block': 'none';
+          }
+        </script>
         <div class = "foodtable">
-          <div id = "stuff" style = "margin: 10px;">
-
-          </div>
+          <div id = "stuff" style = "margin: 10px;"></div>
         </div>
       </div>
     </div>

@@ -53,30 +53,6 @@ function displayPieGraph(values, chart) {
     }
   });
 }
-
-function freq(val, arr) {
-  var count = 0;
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i] === val) {
-      count++;
-    }
-  }
-  return (count/arr.length);
-}
-
-function arrayify(json) {
-  var arr = [];
-  var food = Object.values(json);
-  for (var i = 0; i < food.length; i++) {
-    arr.push(food[i]["foodGroup"]);
-  }
-  var temparr = ["Dairy", "Protein", "Fruit", "Vegetable", "Grain", "Other"];
-  var temparr2 = []
-  for (var i = 0; i < temparr.length; i++) {
-    temparr2.push(freq(temparr[i], arr));
-  }
-  return temparr2;
-}
 function getFromServer() {
   var userId = firebase.auth().currentUser.uid;
   firebase.database().ref('/eatHistory/' + userId).once('value').then(function(snapshot) {
@@ -84,7 +60,6 @@ function getFromServer() {
     console.log(snapshot.val());
     displayPieGraph(arrayify(snapshot.val()), pieChart);
   });
-
 }
 
 firebase.auth().onAuthStateChanged(user => {
