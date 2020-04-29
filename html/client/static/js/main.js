@@ -101,8 +101,9 @@ firebase.auth().onAuthStateChanged(function(user) {
   }
 })
 
-document.getElementById('searchButton').onclick = function(e) {
+searchButton.onclick = function(e) {
   e.preventDefault();
+  searchButton.classList.add('loading');
   var filterDict = {};
   for (var currFilter of Object.keys(filtArr)) {
     var filtVal = document.getElementById(currFilter).value;
@@ -115,6 +116,7 @@ document.getElementById('searchButton').onclick = function(e) {
 }
 
 socket.on('searchRes', function(res) {
+  searchButton.classList.remove('loading');
   console.log(res);
   processJSON(res);
 })

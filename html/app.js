@@ -190,7 +190,7 @@ function searchFood(name, query) {
   	"equipment": "pan",
   	"limitLicense": "false",
   	"offset": "0",
-  	"number": "4"
+  	"number": "30"
   };
   for (var key of Object.keys(query)) {
     toQuery[key] = query[key];

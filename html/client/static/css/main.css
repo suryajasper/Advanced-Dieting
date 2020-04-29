@@ -363,7 +363,7 @@ img {
   display: inline-block;
   font-size: 16px;
 }
-.glass:hover
+.glass:not(.loading):hover
 {
   cursor: pointer;
   color: white;
@@ -439,4 +439,9 @@ img {
   display: inline-block;
   margin-right: 5px;
   margin-left: 5px;
+}
+
+.loading {
+  background-image: url(../images/loading.gif);
+  background-size: cover;
 }
