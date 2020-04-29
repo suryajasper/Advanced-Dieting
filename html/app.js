@@ -341,7 +341,9 @@ io.on('connection', function(socket){
       console.log('loading foods');
       if (!(snapshot.val() === undefined || snapshot.val() === null)) {
         //console.log(snapshot.val()[userID]);
-        socket.emit('display stored foods', snapshot.val()[userID]);
+        if (snapshot.val()[userID] !== null) {
+          socket.emit('display stored foods', snapshot.val()[userID]);
+        }
       }
     })
   })
