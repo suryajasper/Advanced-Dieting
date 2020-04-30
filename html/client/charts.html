@@ -3,8 +3,13 @@
     <title>Diet Charts</title>
     <meta charset = "utf-8"></meta>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script
+			  src="https://code.jquery.com/jquery-3.4.1.min.js"
+			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			  crossorigin="anonymous"></script>
   </head>
   <link rel="stylesheet" href="static/css/main.css">
+  <script src="/socket.io/socket.io.js"></script>
   <body>
     <header>
       <h1 style = "display: inline-block;">Advanced Dieting</h1>
@@ -24,8 +29,38 @@
     </header>
     <script src = "static/js/headerSettings.js"></script>
     <div class = "center">
+      <div id = "dateSelect" style = "margin-top: 55px;">
+        Month
+        <select style = "width: 25vw;" id = "month">
+          <option value = "0">All</option>
+          <option value = "1">January</option>
+          <option value = "2">February</option>
+          <option value = "3">March</option>
+          <option value = "4">April</option>
+          <option value = "5">May</option>
+          <option value = "6">June</option>
+          <option value = "7">July</option>
+          <option value = "8">August</option>
+          <option value = "9">September</option>
+          <option value = "10">October</option>
+          <option value = "11">November</option>
+          <option value = "12">December</option>
+        </select>
+        Year
+        <select id = "year">
+          <option value = "2020">2020</option>
+          <option value = "2019">2019</option>
+          <option value = "2018">2018</option>
+        </select>
+        Data
+        <select id = "data" style = "width: 15vw;">
+          <option value = "2020">2020</option>
+          <option value = "2019">2019</option>
+          <option value = "2018">2018</option>
+        </select>
+        <a class = "glass" id = "genGraph">View</a>
+      </div>
       <canvas id = "lineChart"></canvas>
-      <canvas id = "pieChart"></canvas>
     </div>
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
