@@ -7,8 +7,6 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 5000;
 
-var admin = require('firebase-admin');
-
 var serviceAccount = require("/Users/suryajasper2004/Downloads/service-account-file.json");
 
 admin.initializeApp({
@@ -287,11 +285,12 @@ io.on('connection', function(socket){
     })
   });
 
-  socket.on('addToEatHistory', function(userID, foodID) {
+  socket.on('addToEatHistory', function(userID, foodID, date) {
     refAllFood.on("value", function(snapshot) {
       var allFoods = snapshot.val();
       var update = {};
       update[foodID] = allFoods[foodID];
+      update[foodID].dateAdded = date;
       var actUpdate = {};
       actUpdate[userID] = update;
       refEatHistory.update(actUpdate);
@@ -361,6 +360,31 @@ io.on('connection', function(socket){
     searchProm.end(function(res) {
       if (res.error) {console.log(res.error);}
       socket.emit('searchRes', res.body.results);
+    })
+  })
+
+  socket.on('sort by date', function(userID, nutrient) {
+    refEatHistory.once("value", function(snapshot) {
+      var eatHistory = snapshot.val()[userID]
+      if (eatHistory !== null) {
+        var dateDict = {};
+        var yearTotal = {};
+        var monthTotal = {};
+
+        for (var food of eatHistory) {
+          var month = parseInt(food.date.split('/')[0]);
+          var day = parseInt(food.date.split('/')[1]);
+          var year = parseInt(food.date.split('/')[2]);
+
+          if (!(month in yearTotal)) yearTotal[month] = 0;
+          yearTotal[month] += food[nutrient];
+
+          if (!(month in monthTotal)) monthTotal[month] = {};
+          if (!(day in monthTotal[month])) monthTotal[month][day] = 0;
+          monthTotal[month][day] += food[nutrient];
+        }
+        socket.emit('sorted by date', monthTotal, yearTotal);
+      }
     })
   })
 

@@ -1,6 +1,15 @@
 var socket = io();
 initializeFirebase();
 
+function getDate() {
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+  today = mm + '/' + dd + '/' + yyyy;
+  return today;
+}
+
 function replaceStr(str, key, replaceWith) {
   str = str.replace(key, replaceWith);
   while (str.replace(key, replaceWith) !== str) {
@@ -27,7 +36,7 @@ firebase.auth().onAuthStateChanged(user => {
   eatButton.style.display = 'inline-block';
   eatButton.onclick = function() {
     var originalColor = this.style.backgroundColor;
-    socket.emit('addToEatHistory', user.uid, idOfFood);
+    socket.emit('addToEatHistory', user.uid, idOfFood, getDate());
     this.innerHTML = 'Added to Eat History';
     this.style.backgroundColor = "rgb(42, 147, 55)";
     var changeTextPromise = wait(0.5);

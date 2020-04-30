@@ -30,6 +30,12 @@
     <script src = "static/js/headerSettings.js"></script>
     <div class = "center">
       <div id = "dateSelect" style = "margin-top: 55px;">
+        Year
+        <select id = "year">
+          <option value = "2020">2020</option>
+          <option value = "2019">2019</option>
+          <option value = "2018">2018</option>
+        </select>
         Month
         <select style = "width: 25vw;" id = "month">
           <option value = "0">All</option>
@@ -46,18 +52,8 @@
           <option value = "11">November</option>
           <option value = "12">December</option>
         </select>
-        Year
-        <select id = "year">
-          <option value = "2020">2020</option>
-          <option value = "2019">2019</option>
-          <option value = "2018">2018</option>
-        </select>
         Data
-        <select id = "data" style = "width: 15vw;">
-          <option value = "2020">2020</option>
-          <option value = "2019">2019</option>
-          <option value = "2018">2018</option>
-        </select>
+        <select id = "data" style = "width: 15vw;"></select>
         <a class = "glass" id = "genGraph">View</a>
       </div>
       <canvas id = "lineChart"></canvas>

@@ -17,16 +17,24 @@ function addOptions(select_id, options) {
   }
 }
 
+function formatAsCoordinates(values) {
+  coordinateSystem = [];
+  for (var key of Object.keys(values)) {
+    coordinateSystem.push({x: key, y: values[key]});
+  }
+  return coordinateSystem;
+}
+
 addOptions('data', nutrients);
 
 function displayLineGraph(title, values, chart) {
   var ctx = chart.getContext('2d');
   var myChart = new Chart(ctx, {
-    type: 'line',
+    type: 'scatter',
     data: {
-      labels: Object.keys(values),
       datasets: [{
         label: title,
+        showLine: true,
         fill: false,
         lineTension: 0.1,
         backgroundColor: "rgba(75, 192, 192, 0.4)",
@@ -40,7 +48,7 @@ function displayLineGraph(title, values, chart) {
         pointBorderWidth: 1,
         pointHoverRadius: 5,
         pointHitRadius: 10,
-        data: Object.values(values),
+        data: values
       }]
     },
     options: {
@@ -53,18 +61,18 @@ function displayLineGraph(title, values, chart) {
   });
 }
 
-function getFromServer(id) {
-    var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
-    console.log(snapshot.val());
-    displayPieGraph(arrayify(snapshot.val()), pieChart);
-}
-
 firebase.auth().onAuthStateChanged(user => {
   if(user) {
     showAuth();
     document.getElementById('genGraph').onclick = function(e) {
       e.preventDefault();
-      displayLineGraph('testChart', {"hi": 1, "hi1": 2,"hi2":  3,"hi3":  4}, document.getElementById('lineChart'));
+      socket.emit('sort by date', user.uid, document.getElementById('data').value);
+      socket.on('sorted by date', function( monthTotal, yearTotal ) {
+        var month = document.getElementById('month').value;
+        var year = document.getElementById('year').value;
+        var toDisplay = (month === 0) ? yearTotal : monthTotal[month];
+        displayLineGraph('testChart', formatAsCoordinates(toDisplay), document.getElementById('lineChart'));
+      })
       //getFromServer(user.uid);
     }
   }
