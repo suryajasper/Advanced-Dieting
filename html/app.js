@@ -310,7 +310,6 @@ io.on('connection', function(socket){
   socket.on('find ingredients arr', function(ingredients) {
     var unirest = require("unirest");
     var results = ingredients.map(function(ingredient) {
-      console.log('dealing with ' + ingredient);
       return new Promise(function(resolve, reject) {
         var req = unirest("GET", "https://api.spoonacular.com/food/ingredients/autocomplete?query=" + ingredient + "&number=1");
 
@@ -326,9 +325,7 @@ io.on('connection', function(socket){
         return req;
       });
     });
-    console.log('created a promise');
     Promise.all(results).then(function(result) {
-      console.log('we got a result');
       var foodsToSend = [];
       var content = result.map(function(ing) {
         if (ing.body.length > 0) {
@@ -337,7 +334,6 @@ io.on('connection', function(socket){
         }
         return ing.body;
       });
-      console.log(foodsToSend);
       socket.emit('ingredientsArrRes', foodsToSend)
     });
   })
