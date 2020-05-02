@@ -307,24 +307,38 @@ io.on('connection', function(socket){
     });
   })
 
-  socket.on('find ingredients arr', function(ings) {
-    var promises = [];
-    for (var ing of ings) {
-      var newP = searchIngredients(ing);
-      newP.end(function(res) {
-        if (res.error) {console.log(res.error);}
-        socket.emit('ingredientsRes', res.body);
+  socket.on('find ingredients arr', function(ingredients) {
+    var unirest = require("unirest");
+    var results = ingredients.map(function(ingredient) {
+      console.log('dealing with ' + ingredient);
+      return new Promise(function(resolve, reject) {
+        var req = unirest("GET", "https://api.spoonacular.com/food/ingredients/autocomplete?query=" + ingredient + "&number=1");
+
+        req.query({
+          "apiKey": "bc240f5675d94b39b9a096f5a949a9d7",
+          "defaultCss": true
+        });
+
+        req.end(function(data) {
+          resolve(data);
+        });
+
+        return req;
       });
-      promises.push(newP);
-    }
-    Promise.all(promises).then(function(values) {
-      console.log('here');
-      console.log(values);
-      var toReturn = [];
-      for (var value of values) {
-        toReturn.push(JSON.parse(value[0].raw_body));
-      }
-      socket.emit('ingredientsArrRes', toReturn);
+    });
+    console.log('created a promise');
+    Promise.all(results).then(function(result) {
+      console.log('we got a result');
+      var foodsToSend = [];
+      var content = result.map(function(ing) {
+        if (ing.body.length > 0) {
+          console.log(ing.body[0]);
+          foodsToSend.push(ing.body[0]);
+        }
+        return ing.body;
+      });
+      console.log(foodsToSend);
+      socket.emit('ingredientsArrRes', foodsToSend)
     });
   })
 

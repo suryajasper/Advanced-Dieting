@@ -88,7 +88,7 @@ function addFood() {
       socket.on('ingredientsArrRes', function(res) {
         console.log(res);
         for (var i = 0; i < res.length; i++) (function(i) {
-          var ing = res[i][0];
+          var ing = res[i];
           console.log('adding ' + ing.name + ' to fridge');
           var imageLink ='https://spoonacular.com/cdn/ingredients_100x100/' + ing.image;
           socket.emit('save ingredient', firebase.auth().currentUser.uid, {id: ing.id, name: ing.name, image: imageLink, qty: 5, unit: 'g'});
