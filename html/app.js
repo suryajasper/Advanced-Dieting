@@ -205,7 +205,7 @@ function getByIngredients(ingredients) {
 
   var unirest = require("unirest");
 
-  var req = unirest("GET", "https://api.spoonacular.com/recipes/findByIngredients?ingredients=apples,+flour,+sugar&number=2");
+  var req = unirest("GET", "https://api.spoonacular.com/recipes/findByIngredients?ingredients=" + ingString);
   req.query({
     "apiKey": "bc240f5675d94b39b9a096f5a949a9d7",
     'number': '20',
