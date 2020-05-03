@@ -107,6 +107,16 @@ function getFoodParam() {
   return req;
 }
 
+function getNutritionById(id) {
+  var unirest = require("unirest");
+
+  var req = unirest("GET", "https://api.spoonacular.com/recipes/" + id.toString() + "/nutritionWidget.json");
+
+  req.query({"apiKey": "bc240f5675d94b39b9a096f5a949a9d7"});
+
+  return req;
+}
+
 function searchFood(name, query) {
   var unirest = require("unirest");
   var req = unirest("GET", "https://api.spoonacular.com/recipes/searchComplex");
@@ -255,6 +265,19 @@ function visualizeIngredients(id) {
   return req;
 }
 
+function parseNutrients(food) {
+  nutrients = {"dateAdded": food.dateAdded};
+
+  var arrToGoThrough = Object.values(food.bad);
+  for (var nutrient of Object.values(food.good)) {arrToGoThrough.push(nutrient);}
+
+  for (var nutrient of arrToGoThrough) {
+    nutrients[nutrient.title.replace(' ', '').toLowerCase()] = parseInt(nutrient.amount.replace(/[^\d.-]/g, ''));
+  }
+
+  return nutrients;
+}
+
 io.on('connection', function(socket){
   /*var promise = getFoodParam();
   promise.end(function (res) {
@@ -264,10 +287,18 @@ io.on('connection', function(socket){
 
   socket.on('displayFood', function(food) {
     socket.emit('redirect', '/foodDetails.html' + '?id=' + food.id + '&name=' + food.title);
-    var update = {};
-    update[food.id] = food;
-    refAllFood.update(update);
   });
+
+  socket.on('redirectToDetailsSuccessful', function(id) {
+    var promiseById = getNutritionById(id);
+    promiseById.end(function(res) {
+      console.log(res.body);
+      var update = {};
+      update[id] = res.body;
+      refAllFood.update(update);
+      socket.emit('eatReady');
+    })
+  })
 
   socket.on('visualizeIngredients', function(id) {
     var newP = visualizeIngredients(id);
@@ -374,6 +405,7 @@ io.on('connection', function(socket){
   })
 
   socket.on('sort by date', function(userID, nutrient) {
+    nutrient = nutrient.toLowerCase();
     refEatHistory.once("value", function(snapshot) {
       var eatHistory = snapshot.val()[userID]
       if (eatHistory !== null) {
@@ -381,10 +413,12 @@ io.on('connection', function(socket){
         var yearTotal = {};
         var monthTotal = {};
 
-        for (var food of eatHistory) {
-          var month = parseInt(food.date.split('/')[0]);
-          var day = parseInt(food.date.split('/')[1]);
-          var year = parseInt(food.date.split('/')[2]);
+        for (var rawfood of Object.values(eatHistory)) {
+          var food = parseNutrients(rawfood);
+
+          var month = parseInt(food.dateAdded.split('/')[0]);
+          var day = parseInt(food.dateAdded.split('/')[1]);
+          var year = parseInt(food.dateAdded.split('/')[2]);
 
           if (!(month in yearTotal)) yearTotal[month] = 0;
           yearTotal[month] += food[nutrient];

@@ -28,12 +28,18 @@ var foodNameh1 = document.getElementById("foodName");
 var locationVars = replaceStr(window.location.href.split('?')[1], '%20', ' ');
 foodNameh1.innerHTML =  locationVars.split('&')[1].split('=')[1];
 var idOfFood = parseInt(locationVars.split('&')[0].split('=')[1]);
+socket.emit('redirectToDetailsSuccessful', idOfFood);
 
 firebase.auth().onAuthStateChanged(user => {
   showAuth();
   var eatButton = document.createElement('button');
   eatButton.innerHTML = "Eat";
+  eatButton.disabled = true;
+  eatButton.id = "eatButton";
   eatButton.style.display = 'inline-block';
+  socket.on('eatReady', function() {
+    document.getElementById('eatButton').disabled = false;
+  })
   eatButton.onclick = function() {
     var originalColor = this.style.backgroundColor;
     socket.emit('addToEatHistory', user.uid, idOfFood, getDate());
