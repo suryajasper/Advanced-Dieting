@@ -28,10 +28,10 @@ var foodNameh1 = document.getElementById("foodName");
 var locationVars = replaceStr(window.location.href.split('?')[1], '%20', ' ');
 foodNameh1.innerHTML =  locationVars.split('&')[1].split('=')[1];
 var idOfFood = parseInt(locationVars.split('&')[0].split('=')[1]);
-socket.emit('redirectToDetailsSuccessful', idOfFood);
 
 firebase.auth().onAuthStateChanged(user => {
   showAuth();
+  socket.emit('redirectToDetailsSuccessful', idOfFood);
   var eatButton = document.createElement('button');
   eatButton.innerHTML = "Eat";
   eatButton.disabled = true;

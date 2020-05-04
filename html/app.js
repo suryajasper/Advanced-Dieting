@@ -292,7 +292,6 @@ io.on('connection', function(socket){
   socket.on('redirectToDetailsSuccessful', function(id) {
     var promiseById = getNutritionById(id);
     promiseById.end(function(res) {
-      console.log(res.body);
       var update = {};
       update[id] = res.body;
       refAllFood.update(update);
@@ -322,9 +321,7 @@ io.on('connection', function(socket){
       var update = {};
       update[foodID] = allFoods[foodID];
       update[foodID].dateAdded = date;
-      var actUpdate = {};
-      actUpdate[userID] = update;
-      refEatHistory.update(actUpdate);
+      refEatHistory.child(userID).update(update);
     }, function (error) {
       console.log("Reading eat history failed: " + error.code);
     });
@@ -360,7 +357,6 @@ io.on('connection', function(socket){
       var foodsToSend = [];
       var content = result.map(function(ing) {
         if (ing.body.length > 0) {
-          console.log(ing.body[0]);
           foodsToSend.push(ing.body[0]);
         }
         return ing.body;
@@ -415,6 +411,7 @@ io.on('connection', function(socket){
 
         for (var rawfood of Object.values(eatHistory)) {
           var food = parseNutrients(rawfood);
+          console.log(food);
 
           var month = parseInt(food.dateAdded.split('/')[0]);
           var day = parseInt(food.dateAdded.split('/')[1]);
