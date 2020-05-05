@@ -39,6 +39,8 @@ function eraseResults() {
 }
 
 function processJSON(json) {
+  window.localStorage.setItem('resultCache', JSON.stringify(json));
+
   eraseResults();
   var slider = document.getElementById('imgSize');
 
@@ -92,6 +94,13 @@ socket.on('redirect', function(location) {
 });
 
 firebase.auth().onAuthStateChanged(function(user) {
+  if (window.localStorage.getItem('userID') == user.uid) {
+    var resultCache = window.localStorage.getItem('resultCache');
+    if (resultCache !== null) {
+      processJSON( JSON.parse(resultCache) );
+    }
+  }
+  window.localStorage.setItem('userID', user.uid);
   document.getElementById('whatcanimake').onclick = function(e) {
     e.preventDefault();
     socket.emit('get stored foods', user.uid);
