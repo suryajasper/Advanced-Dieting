@@ -1,6 +1,7 @@
 var email = document.getElementById("email");
 var username = document.getElementById("username");
 var pword = document.getElementById("pword");
+var confirmpword = document.getElementById("confirmpword");
 var gender = document.getElementById("gender");
 var weight = document.getElementById("weight");
 var height = document.getElementById("height");
@@ -46,7 +47,9 @@ firebase.auth().onAuthStateChanged(user => {
 });
 
 
-submitButton.addEventListener('click', (e) => {
+submitButton.onclick = function(e) {
   e.preventDefault();
-  signUpUser();
-})
+  if (pword.value === confirmpword.value) {
+    signUpUser();
+  }
+}

@@ -127,7 +127,6 @@ fieldset {
 
 .center-div {
   display: inline-block;
-  background-color:#f2f3f5;
   padding: 1em;
   border-radius:4px;
   margin-top: 100px;
@@ -450,4 +449,78 @@ img {
   display: inline-block;
   margin-left: 5px;
   margin-right: 5px;
+}
+
+.membership-option {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 3px solid black;
+  width: 25vmax;
+  margin-top: 0px;
+}
+
+.membership-option li:hover {
+  color: rgb(1, 42, 13);
+  text-shadow: 1px 1px rgba(62, 80, 58, 0.52);
+  -webkit-transition: 0.2s;
+}
+.membership-option li:hover {
+  -webkit-transition: 0.2s;
+}
+
+.membership-option button {
+  border: none;
+  color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: 15px;
+  box-shadow: 0px 1px 4px -2px #333;
+  -webkit-transition: 0.5s;
+}
+
+.free {
+  background: linear-gradient(#ffffff, #9e9e9f);
+}
+.free button {
+  background: linear-gradient(#a8a8a8, #878787);
+}
+.free button:hover {
+  background: linear-gradient(#8ea8a8, #708286);
+  -webkit-transition: 0.5s;
+}
+.pro {
+  background: linear-gradient(#ddfaf2, #99d9a5);
+}
+.pro button {
+  background: linear-gradient(#abfae4, #63d779);
+}
+.pro button:hover {
+  background: linear-gradient(#7af1d0, #36d554);
+  -webkit-transition: 0.5s;
+}
+.premium {
+  background: linear-gradient(#ddfaf2, #99a3d9);
+}
+.premium button {
+  background: linear-gradient(#a9f1dd, #6879d6);
+}
+.premium button:hover {
+  background: linear-gradient(#6ff0cc, #3045b8);
+  -webkit-transition: 0.5s;
+}
+
+.membership-option h2, p, button {
+  text-align: center;
+}
+
+.membership-option h2, li {
+  color: black;
+}
+
+.membership-option .price {
+  color: #757575;
 }
