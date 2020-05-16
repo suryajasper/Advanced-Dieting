@@ -429,6 +429,18 @@ io.on('connection', function(socket){
     })
   })
 
+  socket.on('changeQty', function(name, newQty, userID) {
+    refIngredients.child(userID).once("value", function(snapshot) {
+      if (!(snapshot.val()[name] === undefined || snapshot.val()[name] === null)) {
+        var update = {};
+        var toUpdate = snapshot.val()[name];
+        toUpdate['qty'] = newQty;
+        update[name] = toUpdate;
+        refIngredients.child(userID).update(update);
+      }
+    })
+  })
+
 });
 
 http.listen(port, function(){

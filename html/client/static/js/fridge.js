@@ -5,7 +5,9 @@ var initialized = false;
 
 var storedIngredientNames = [];
 
-function makeOperationButton(operation, qtyDis) {
+var clientUserId;
+
+function makeOperationButton(operation, qtyDis, foodName) {
   var button = document.createElement('a');
   button.style.width = "25px";
   button.style.height = "25px";
@@ -26,11 +28,15 @@ function makeOperationButton(operation, qtyDis) {
     var opBut = document.getElementById('operationButton');
     opBut.innerHTML = operation;
     opBut.onclick = function() {
+      var newValue = 0;
       if (operation === '-') {
-        qtyDis.innerHTML = (parseInt(qtyDis.innerHTML.split(' ')[0]) - parseInt(document.getElementById('amountIn').value)).toString() + ' ' + qtyDis.innerHTML.split(' ')[1];
+        newValue = parseInt(qtyDis.innerHTML.split(' ')[0]) - parseInt(document.getElementById('amountIn').value);
+        qtyDis.innerHTML = (newValue).toString() + ' ' + qtyDis.innerHTML.split(' ')[1];
       } else {
-        qtyDis.innerHTML = (parseInt(qtyDis.innerHTML.split(' ')[0]) + parseInt(document.getElementById('amountIn').value)).toString() + ' ' + qtyDis.innerHTML.split(' ')[1];
+        newValue = parseInt(qtyDis.innerHTML.split(' ')[0]) + parseInt(document.getElementById('amountIn').value)
+        qtyDis.innerHTML = (newValue).toString() + ' ' + qtyDis.innerHTML.split(' ')[1];
       }
+      socket.emit('changeQty', foodName, newValue, clientUserId);
       document.getElementById('popup').style.display = "none";
     }
   }
@@ -43,8 +49,6 @@ function addFridgeItem(name, imageSRC, qty, unit) {
     console.log('already have ' + name);
     return;
   } else {
-    console.log('adding ' + name);
-    console.log(storedIngredientNames);
     storedIngredientNames.push(name);
   }
 
@@ -79,8 +83,8 @@ function addFridgeItem(name, imageSRC, qty, unit) {
   qtyDis.style.marginLeft = '6px';
   qtyDis.style.display = "inline-block";
 
-  var subtractButton = makeOperationButton('-', qtyDis);
-  var addButton = makeOperationButton('+', qtyDis);
+  var subtractButton = makeOperationButton('-', qtyDis, name);
+  var addButton = makeOperationButton('+', qtyDis, name);
 
   div.appendChild(subtractButton);
   div.appendChild(qtyDis);
@@ -158,6 +162,7 @@ firebase.auth().onAuthStateChanged(user => {
     initialized = true;
     console.log(initialized);
     showAuth();
+    clientUserId = user.uid;
     socket.emit('get stored foods', user.uid);
     socket.on('display stored foods', function(food) {
       console.log(food);
