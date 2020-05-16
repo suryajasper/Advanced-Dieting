@@ -43,6 +43,7 @@ firebase.auth().onAuthStateChanged(user => {
       to_reduce: toReduce.value,
       to_increase: toIncrease.value
     });
+    window.location = 'main.html';
   }
 });
 

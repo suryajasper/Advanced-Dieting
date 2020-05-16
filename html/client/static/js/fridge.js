@@ -3,6 +3,8 @@ initializeFirebase();
 
 var initialized = false;
 
+var storedIngredientNames = [];
+
 function makeOperationButton(operation, qtyDis) {
   var button = document.createElement('a');
   button.style.width = "25px";
@@ -36,11 +38,22 @@ function makeOperationButton(operation, qtyDis) {
 }
 
 function addFridgeItem(name, imageSRC, qty, unit) {
+  //console.log(storedIngredientNames);
+  if (storedIngredientNames.includes(name)) {
+    console.log('already have ' + name);
+    return;
+  } else {
+    console.log('adding ' + name);
+    console.log(storedIngredientNames);
+    storedIngredientNames.push(name);
+  }
+
   var div = document.createElement('div');
   div.classList.add('center-div');
   div.style.border = "2px solid black";
   div.style.marginTop = '5px';
   div.style.marginLeft = '6px';
+  div.style.background = 'linear-gradient(rgba(110, 107, 107, 0.6), rgba(182, 203, 189, 1))';
 
   var img = document.createElement('img');
   img.src = imageSRC;

@@ -106,6 +106,7 @@ fieldset {
   width:80%;
   margin-top: 10px;
 }
+
 .filter {
   text-decoration: none;
   cursor: pointer;
@@ -130,6 +131,9 @@ fieldset {
   padding: 1em;
   border-radius:4px;
   margin-top: 100px;
+}
+.center-div:not(.noformbg) {
+  background-color: rgb(209, 209, 209);
 }
 
 h1 {
@@ -523,4 +527,8 @@ img {
 
 .membership-option .price {
   color: #757575;
+}
+
+.ingDiv {
+  background-color: rgba(28, 28, 28, 0.48);
 }
