@@ -83,12 +83,15 @@ function addFridgeItem(name, imageSRC, qty, unit, possibleUnits) {
 
   var qtyDis = document.createElement('p');
   qtyDis.innerHTML = qty.toString() + ' ' + unit;
+  qtyDis.style.textAlign = 'center';
   qtyDis.style.margin = '0px';
   qtyDis.style.marginLeft = '6px';
-  qtyDis.style.display = "inline-block";
+  //qtyDis.style.display = "inline-block";
 
   img.onclick = function() {
+    var ingPopupInput = document.getElementById('qtyInput');
     ingPopup.style.display = 'block';
+    ingPopupInput.value = qtyDis.innerHTML.replace(/\D/g,'');
     $('#specpopupSelect').empty();
     for (var i = 0; i < possibleUnits.length; i++) {
       var newOption = document.createElement('option');
@@ -98,16 +101,17 @@ function addFridgeItem(name, imageSRC, qty, unit, possibleUnits) {
     }
     ingPopupSave.onclick = function() {
       ingPopup.style.display = 'none';
-      qtyDis.innerHTML = qtyDis.innerHTML.replace(/\D/g,'') + ingPopupSelect.value;
+      qtyDis.innerHTML = ingPopupInput.value.toString() + ' ' + ingPopupSelect.value;
+      socket.emit('changeQty', name, ingPopupInput.value, ingPopupSelect.value, clientUserId);
     }
   }
 
-  var subtractButton = makeOperationButton('-', qtyDis, name);
-  var addButton = makeOperationButton('+', qtyDis, name);
+  //var subtractButton = makeOperationButton('-', qtyDis, name);
+  //var addButton = makeOperationButton('+', qtyDis, name);
 
-  div.appendChild(subtractButton);
+  //div.appendChild(subtractButton);
   div.appendChild(qtyDis);
-  div.appendChild(addButton);
+  //div.appendChild(addButton);
 
   document.getElementById('supplyDrop').appendChild(div);
 }
@@ -127,7 +131,7 @@ function addFood() {
           var ing = res[i];
           console.log('adding ' + ing.name + ' to fridge');
           var imageLink ='https://spoonacular.com/cdn/ingredients_100x100/' + ing.image;
-          socket.emit('save ingredient', firebase.auth().currentUser.uid, {id: ing.id, name: ing.name, image: imageLink, qty: 5, unit: 'g'});
+          socket.emit('save ingredient', firebase.auth().currentUser.uid, {id: ing.id, name: ing.name, image: imageLink, qty: 5, unit: 'g', possibleUnits: ing.possibleUnits});
           addFridgeItem(ing.name, imageLink, 5, 'g', ing.possibleUnits);
           document.getElementById('addFoodPopup').style.display = "none";
         })(i)
@@ -161,7 +165,7 @@ function addFood() {
           addToFridgeButton.onclick = function() {
             console.log('adding ' + ing.name + ' to fridge');
             var imageLink ='https://spoonacular.com/cdn/ingredients_100x100/' + ing.image;
-            socket.emit('save ingredient', firebase.auth().currentUser.uid, {id: ing.id, name: ing.name, image: imageLink, qty: 5, unit: 'g'});
+            socket.emit('save ingredient', firebase.auth().currentUser.uid, {id: ing.id, name: ing.name, image: imageLink, qty: 5, unit: 'g', possibleUnits: ing.possibleUnits});
             addFridgeItem(ing.name, imageLink, 5, 'g');
             document.getElementById('addFoodPopup').style.display = "none";
           }

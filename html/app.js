@@ -429,12 +429,13 @@ io.on('connection', function(socket){
     })
   })
 
-  socket.on('changeQty', function(name, newQty, userID) {
+  socket.on('changeQty', function(name, newQty, newUnit, userID) {
     refIngredients.child(userID).once("value", function(snapshot) {
       if (!(snapshot.val()[name] === undefined || snapshot.val()[name] === null)) {
         var update = {};
         var toUpdate = snapshot.val()[name];
         toUpdate['qty'] = newQty;
+        toUpdate['unit'] = newUnit;
         update[name] = toUpdate;
         refIngredients.child(userID).update(update);
       }
