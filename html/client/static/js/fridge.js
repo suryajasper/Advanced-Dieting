@@ -104,6 +104,11 @@ function addFridgeItem(name, imageSRC, qty, unit, possibleUnits) {
       qtyDis.innerHTML = ingPopupInput.value.toString() + ' ' + ingPopupSelect.value;
       socket.emit('changeQty', name, ingPopupInput.value, ingPopupSelect.value, clientUserId);
     }
+    document.getElementById('specpopupDelete').onclick = function() {
+      div.remove();
+      ingPopup.style.display = 'none';
+      socket.emit('removeIngredient', clientUserId, name);
+    }
   }
 
   //var subtractButton = makeOperationButton('-', qtyDis, name);

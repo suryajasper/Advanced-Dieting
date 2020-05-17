@@ -442,6 +442,10 @@ io.on('connection', function(socket){
     })
   })
 
+  socket.on('removeIngredient', function(userID, name) {
+    refIngredients.child(userID).child(name).remove();
+  })
+
 });
 
 http.listen(port, function(){
