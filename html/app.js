@@ -230,7 +230,7 @@ function getByIngredients(ingredients) {
 function searchIngredients(ingredient) {
   var unirest = require("unirest");
 
-  var req = unirest("GET", "https://api.spoonacular.com/food/ingredients/autocomplete?query=" + ingredient + "&number=7");
+  var req = unirest("GET", "https://api.spoonacular.com/food/ingredients/autocomplete?query=" + ingredient + "&number=7&metaInformation=true");
 
   req.query({
     "apiKey": "bc240f5675d94b39b9a096f5a949a9d7",
@@ -339,7 +339,7 @@ io.on('connection', function(socket){
     var unirest = require("unirest");
     var results = ingredients.map(function(ingredient) {
       return new Promise(function(resolve, reject) {
-        var req = unirest("GET", "https://api.spoonacular.com/food/ingredients/autocomplete?query=" + ingredient + "&number=1");
+        var req = unirest("GET", "https://api.spoonacular.com/food/ingredients/autocomplete?query=" + ingredient + "&number=1&metaInformation=true");
 
         req.query({
           "apiKey": "bc240f5675d94b39b9a096f5a949a9d7",

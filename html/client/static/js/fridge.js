@@ -43,7 +43,7 @@ function makeOperationButton(operation, qtyDis, foodName) {
   return button;
 }
 
-function addFridgeItem(name, imageSRC, qty, unit) {
+function addFridgeItem(name, imageSRC, qty, unit, possibleUnits) {
   //console.log(storedIngredientNames);
   if (storedIngredientNames.includes(name)) {
     console.log('already have ' + name);
@@ -51,6 +51,10 @@ function addFridgeItem(name, imageSRC, qty, unit) {
   } else {
     storedIngredientNames.push(name);
   }
+
+  var ingPopup = document.getElementById('specpopup');
+  var ingPopupSelect = document.getElementById('specpopupSelect');
+  var ingPopupSave = document.getElementById('specpopupSave');
 
   var div = document.createElement('div');
   div.classList.add('center-div');
@@ -83,6 +87,21 @@ function addFridgeItem(name, imageSRC, qty, unit) {
   qtyDis.style.marginLeft = '6px';
   qtyDis.style.display = "inline-block";
 
+  img.onclick = function() {
+    ingPopup.style.display = 'block';
+    $('#specpopupSelect').empty();
+    for (var i = 0; i < possibleUnits.length; i++) {
+      var newOption = document.createElement('option');
+      newOption.value = possibleUnits[i];
+      newOption.innerHTML = possibleUnits[i];
+      ingPopupSelect.appendChild(newOption);
+    }
+    ingPopupSave.onclick = function() {
+      ingPopup.style.display = 'none';
+      qtyDis.innerHTML = qtyDis.innerHTML.replace(/\D/g,'') + ingPopupSelect.value;
+    }
+  }
+
   var subtractButton = makeOperationButton('-', qtyDis, name);
   var addButton = makeOperationButton('+', qtyDis, name);
 
@@ -109,7 +128,7 @@ function addFood() {
           console.log('adding ' + ing.name + ' to fridge');
           var imageLink ='https://spoonacular.com/cdn/ingredients_100x100/' + ing.image;
           socket.emit('save ingredient', firebase.auth().currentUser.uid, {id: ing.id, name: ing.name, image: imageLink, qty: 5, unit: 'g'});
-          addFridgeItem(ing.name, imageLink, 5, 'g');
+          addFridgeItem(ing.name, imageLink, 5, 'g', ing.possibleUnits);
           document.getElementById('addFoodPopup').style.display = "none";
         })(i)
       })
@@ -168,10 +187,8 @@ firebase.auth().onAuthStateChanged(user => {
       console.log(food);
       for (var i = 0; i < Object.keys(food).length; i++) {
         var foodIng = food[Object.keys(food)[i]];
-        addFridgeItem(foodIng.name, foodIng.image, foodIng.qty, foodIng.unit);
+        addFridgeItem(foodIng.name, foodIng.image, foodIng.qty, foodIng.unit, foodIng.possibleUnits);
       }
     });
   }
 })
-
-// Demo: addFridgeItem('surya', 'https://assets.fireside.fm/file/fireside-images/podcasts/images/b/bc7f1faf-8aad-4135-bb12-83a8af679756/cover_small.jpg', 5, 'g');
