@@ -21,6 +21,14 @@ var refEatHistory = database.ref("eatHistory");
 var refAllFood = database.ref("allFoodData");
 var refIngredients = database.ref('ingredients');
 
+function replaceAll(string, part, newPart) {
+  string = string.replace(part, newPart);
+  while (string.indexOf(part) !== -1) {
+    string = string.replace(part, newPart);
+  }
+  return string;
+}
+
 function getFoodParam() {
   var unirest = require("unirest");
 
@@ -315,13 +323,27 @@ io.on('connection', function(socket){
     })
   });
 
-  socket.on('addToEatHistory', function(userID, foodID, date) {
+  socket.on('addToEatHistory', function(userID, foodID, nameOfFood, dateRaw) {
+    var date = replaceAll(dateRaw, '/', ' ');
     refAllFood.on("value", function(snapshot) {
       var allFoods = snapshot.val();
-      var update = {};
-      update[foodID] = allFoods[foodID];
-      update[foodID].dateAdded = date;
-      refEatHistory.child(userID).update(update);
+      refEatHistory.child(userID).once('value', function(eatSnapshot) {
+        var length = 0;
+        if (eatSnapshot.val() !== null && !(eatSnapshot.val()[date] === undefined || eatSnapshot.val()[date] === null)) {
+          length = Object.keys(eatSnapshot.val()[date]).length;
+        }
+        var update = {};
+        update[date] = {};
+        update[date][length] = allFoods[foodID];
+        update[date][length].name = nameOfFood;
+        update[date][length].id = foodID;
+        if (eatSnapshot.val() === null) {
+          var newUpdate = {};
+          newUpdate[userID] = update;
+          refEatHistory.update(newUpdate);
+        }
+        refEatHistory.child(userID).child(date).update(update[date]);
+      })
     }, function (error) {
       console.log("Reading eat history failed: " + error.code);
     });

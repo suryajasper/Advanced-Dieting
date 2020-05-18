@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <title>Fridge</title>
+    <meta charset = "utf-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://www.google.com/jsapi"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script
+			  src="https://code.jquery.com/jquery-3.4.1.min.js"
+			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			  crossorigin="anonymous"></script>
+  </head>
+  <script src="/socket.io/socket.io.js"></script>
+  <link rel="stylesheet" href="static/css/main.css">
+  <body>
+    <header>
+      <h1 style = "display: inline-block;">Advanced Dieting</h1>
+      <div class="dropdown alignRight">
+        <image id = "profileImg" style = "display: inline-block;" align = "right" class ="dropbtn" src = "static/images/anonymous-user.png" width = 50 height = 50></image>
+        <div class="dropdown-content">
+          <div id = "auth">
+            <a href="/healthData.html">Edit profile</a>
+            <a id = "signout">Sign Out</a>
+          </div>
+          <div id = "notauth">
+            <a href = "/signup.html">Sign up</a>
+            <a href = "/login.html">Log in</a>
+          </div>
+        </div>
+      </div>
+    </header>
+    <script src = "static/js/headerSettings.js"></script>
+
+    <div id = "stuff"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-database.js"></script>
+
+    <script src = "static/js/fireBase.js"></script>
+    <script src = "static/js/fridge.js"></script>
+  </body>
+</html>

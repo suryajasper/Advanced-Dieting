@@ -26,7 +26,8 @@ async function wait(timeout) {
 
 var foodNameh1 = document.getElementById("foodName");
 var locationVars = replaceStr(window.location.href.split('?')[1], '%20', ' ');
-foodNameh1.innerHTML =  locationVars.split('&')[1].split('=')[1];
+var nameOfFood = locationVars.split('&')[1].split('=')[1];
+foodNameh1.innerHTML =nameOfFood;
 var idOfFood = parseInt(locationVars.split('&')[0].split('=')[1]);
 
 firebase.auth().onAuthStateChanged(user => {
@@ -42,8 +43,8 @@ firebase.auth().onAuthStateChanged(user => {
   })
   eatButton.onclick = function() {
     var originalColor = this.style.backgroundColor;
-    socket.emit('addToEatHistory', user.uid, idOfFood, getDate());
-    this.innerHTML = 'Added to Eat History';
+    socket.emit('addToEatHistory', user.uid, idOfFood, nameOfFood, getDate());
+    this.innerHTML = 'Added';
     this.style.backgroundColor = "rgb(42, 147, 55)";
     var changeTextPromise = wait(0.5);
     changeTextPromise.then(function() {
