@@ -1,4 +1,4 @@
-# HealthHack-II-project
+# Advanced Dieting
 
 # A cool project that makes it possible to be healthier.
 
