@@ -468,6 +468,19 @@ io.on('connection', function(socket){
     refIngredients.child(userID).child(name).remove();
   })
 
+  socket.on('getEatHistory', function(id) {
+    refEatHistory.once("value", function(eatgensnapshot) {
+      console.log('called');
+      if (eatgensnapshot.val()[id] !== null && eatgensnapshot.val()[id] !== undefined) {
+        console.log('user is defined');
+        refEatHistory.child(id).once("value", function(eatsnapshot) {
+          console.log('sending result');
+          socket.emit('eatHistoryRes', eatsnapshot.val());
+        })
+      }
+    })
+  })
+
 });
 
 http.listen(port, function(){
