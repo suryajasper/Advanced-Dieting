@@ -481,6 +481,22 @@ io.on('connection', function(socket){
     })
   })
 
+  socket.on('removeFromEatHistory', function(userID, date, food) {
+    refEatHistory.child(userID).once("value", function(snapshot) {
+      if (snapshot.val()[date] !== null && snapshot.val()[date] !== undefined) {
+        console.log('date exists');
+        for (var key of Object.keys(snapshot.val()[date])) {
+          var fbFood = snapshot.val()[date][key];
+          console.log(fbFood.name + ' vs ' + food.name);
+          if (fbFood.name === food.name) {
+            console.log('food exists');
+            refEatHistory.child(userID).child(date).child(key).remove();
+          }
+        }
+      }
+    })
+  })
+
 });
 
 http.listen(port, function(){
