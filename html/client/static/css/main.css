@@ -532,3 +532,38 @@ img {
 .ingDiv {
   background-color: rgba(28, 28, 28, 0.48);
 }
+
+.eatHistorySect {
+  background-color: rgb(199, 195, 195);
+  padding: 7px;
+  border-radius: 5px;
+  border: 1px solid black;
+  margin-bottom: 5px;
+}
+
+.alignleft {
+	float: left;
+}
+.alignright {
+	float: right;
+}
+
+.eatHistorySect .eatHistoryDelete {
+  position: relative;
+  padding: 4px;
+  margin: 0px;
+  top: 2px;
+  -webkit-transition: 0.5s;
+}
+
+.eatHistorySect .eatHistoryDelete:hover {
+  background-color: rgb(158, 89, 89);
+  border-color: rgb(158, 89, 89);
+  color: white;
+  -webkit-transition: 0.5s;
+}
+
+.eatHistorySect p {
+  padding: 4px;
+  margin: 0px;
+}
