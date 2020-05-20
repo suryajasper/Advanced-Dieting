@@ -11,6 +11,45 @@ function replaceAll(string, part, newPart) {
   return string;
 }
 
+function isGood(food, byAmount) {
+  var goodTotal = 0, badTotal = 0;
+
+  if (byAmount) {
+    for (var good of food.good) {
+      var amount = good.amount;
+      if (amount.replace(/[0-9]/g, '') === 'g') {
+        goodTotal += parseFloat(amount.replace( /\D/g, ''));
+      } else if (amount.replace(/[0-9]/g, '') === 'mg') {
+        goodTotal += parseFloat(amount.replace( /\D/g, ''))/1000;
+      } else if (amount.replace(/[0-9]/g, '') === 'µg') {
+        goodTotal += parseFloat(amount.replace( /\D/g, ''))/1000000;
+      }
+    }
+
+    for (var bad of food.bad) {
+      var amount = bad.amount;
+      if (amount.replace(/[0-9]/g, '') === 'g') {
+        badTotal += parseFloat(amount.replace( /\D/g, ''));
+      } else if (amount.replace(/[0-9]/g, '') === 'mg') {
+        badTotal += parseFloat(amount.replace( /\D/g, ''))/1000;
+      } else if (amount.replace(/[0-9]/g, '') === 'µg') {
+        badTotal += parseFloat(amount.replace( /\D/g, ''))/1000000;
+      }
+    }
+  } else {
+    for (var good of food.good) {
+      goodTotal += parseInt(good.percentOfDailyNeeds);
+    }
+    for (var bad of food.bad) {
+      badTotal += parseInt(bad.percentOfDailyNeeds);
+    }
+  }
+
+  console.log(goodTotal + ' ' + badTotal);
+
+  return goodTotal > badTotal/1.3;
+}
+
 firebase.auth().onAuthStateChanged(function(user) {
   showAuth();
   var id = user.uid;
@@ -32,6 +71,11 @@ firebase.auth().onAuthStateChanged(function(user) {
 
           var sectDiv = document.createElement('div');
           sectDiv.classList.add('eatHistorySect');
+          if (isGood(food, true)) {
+            sectDiv.style.backgroundColor = "rgb(56, 166, 90)";
+          } else {
+            sectDiv.style.backgroundColor = "rgb(166, 72, 56)";
+          }
 
           var p = document.createElement('p');
           p.style.color = "rgb(52, 52, 52)";
