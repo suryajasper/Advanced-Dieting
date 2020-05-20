@@ -11,6 +11,18 @@ function replaceAll(string, part, newPart) {
   return string;
 }
 
+function clamp(x, a, b) {
+  return Math.min(Math.max(x, a), b);
+}
+
+function graceClamp(x, grace) {
+  return (clamp(x, 0.5, grace)/grace - 0.5/grace) / (1-0.5/grace);
+}
+
+function rgbToString(rgb) {
+  return 'rgb(' + rgb.r.toString() + ',' + rgb.g.toString() + ',' + rgb.b.toString() + ')';
+}
+
 function isGood(food, byAmount) {
   var goodTotal = 0, badTotal = 0;
 
@@ -47,7 +59,19 @@ function isGood(food, byAmount) {
 
   console.log(goodTotal + ' ' + badTotal);
 
-  return goodTotal > badTotal/1.3;
+  return badTotal / goodTotal;
+}
+
+var goodrgb = {r: 56, g: 166, b: 90};
+var badrgb = {r: 166, g: 72, b: 56};
+
+function proportionToRGB(number) {
+  number = graceClamp(number, 4);
+  console.log(number);
+  var _r = goodrgb.r + (badrgb.r - goodrgb.r)*number;
+  var _g = goodrgb.g + (badrgb.g - goodrgb.g)*number;
+  var _b = goodrgb.b + (badrgb.b - goodrgb.b)*number;
+  return {r: _r, g: _g, b: _b};
 }
 
 firebase.auth().onAuthStateChanged(function(user) {
@@ -71,11 +95,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 
           var sectDiv = document.createElement('div');
           sectDiv.classList.add('eatHistorySect');
-          if (isGood(food, true)) {
-            sectDiv.style.backgroundColor = "rgb(56, 166, 90)";
-          } else {
-            sectDiv.style.backgroundColor = "rgb(166, 72, 56)";
-          }
+          sectDiv.style.backgroundColor = rgbToString(proportionToRGB(isGood(food, true)));
 
           var p = document.createElement('p');
           p.style.color = "rgb(52, 52, 52)";
