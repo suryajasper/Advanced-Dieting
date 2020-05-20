@@ -27,7 +27,14 @@
       </div>
     </header>
     <script src = "static/js/headerSettings.js"></script>
-    <h1 style = "margin-top: 60px;" id = "foodName">Details about Food</h1>
+    <h1 style = "margin-top: 60px; margin-bottom: 10px;" id = "foodName">Details about Food</h1>
+    <p style = "color: black; font-size: 12px; text-align: left; display: block;">If you are entering a food that you ate on a previous day, please enter a date below.</p>
+    <div style = "display: block;" class = "date">
+      Month:<select id = "monthSelect"></select>
+      Day:<select id = "daySelect"></select>
+      Year:<select id = "yearSelect"></select>
+    </div>
+    <button id = "eatButton">Eat</button>
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js"></script>
     <script src = "static/js/fireBase.js"></script>

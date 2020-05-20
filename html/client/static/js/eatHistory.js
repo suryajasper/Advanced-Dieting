@@ -17,7 +17,7 @@ firebase.auth().onAuthStateChanged(function(user) {
   socket.emit('getEatHistory', id);
   socket.on('eatHistoryRes', function(history) {
     console.log(history);
-    for (var date of Object.keys(history)) (function(date) {
+    for (var date of Object.keys(history).reverse()) (function(date) {
       var dateheading = document.createElement('h3');
       dateheading.style.display = 'block';
       dateheading.style.color = 'rgb(0, 0, 0)';

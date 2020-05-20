@@ -24,26 +24,81 @@ async function wait(timeout) {
   });
 }
 
+function startWithZero(number) {
+  if (number.toString().length > 2) {
+    return number.toString();
+  } else {
+    return ('0' + number).slice(-2);
+  }
+}
+
+function fillWithOptions(select, options, optionValues) {
+  $('#' + select.id).empty();
+  var toLoopStart = (Number.isInteger(options)) ? options : 0;
+  var toLoopEnd = (optionValues === null) ? options.length: (Number.isInteger(optionValues) ? optionValues : optionValues.length);
+  for (var i = toLoopStart; i < toLoopEnd; i++) {
+    var newOption = document.createElement('option');
+    if (optionValues === null || Number.isInteger(optionValues)) {
+      newOption.value = startWithZero(i+1);
+    } else {
+      newOption.value = optionValues[i];
+    }
+    if (options === null || Number.isInteger(optionValues)) {
+      newOption.innerHTML = i+1;
+    } else {
+      newOption.innerHTML = options[i];
+    }
+    select.appendChild(newOption);
+  }
+}
+
+function daysInMonth (month, year) {
+  return new Date(year, month, 0).getDate();
+}
+
 var foodNameh1 = document.getElementById("foodName");
 var locationVars = replaceStr(window.location.href.split('?')[1], '%20', ' ');
 var nameOfFood = locationVars.split('&')[1].split('=')[1];
 foodNameh1.innerHTML =nameOfFood;
 var idOfFood = parseInt(locationVars.split('&')[0].split('=')[1]);
 
+var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+var monthSelect = document.getElementById('monthSelect');
+var daySelect = document.getElementById('daySelect');
+var yearSelect = document.getElementById('yearSelect');
+
+function modifyDaySelect() {
+  fillWithOptions(daySelect, 0, daysInMonth(parseInt(monthSelect.value), parseInt(yearSelect.value)));
+}
+function formatAsDate() {
+  return monthSelect.value + '/' + daySelect.value + '/' + yearSelect.value;
+}
+
+fillWithOptions(monthSelect, months, null, null);
+fillWithOptions(daySelect, 0, 31, null);
+fillWithOptions(yearSelect, 2000, 2020, false);
+
+monthSelect.value = startWithZero(new Date().getMonth() + 1);
+yearSelect.value = startWithZero(new Date().getFullYear());
+
+modifyDaySelect();
+daySelect.value = startWithZero(new Date().getDate());
+
+monthSelect.oninput = modifyDaySelect;
+yearSelect.oninput = modifyDaySelect;
+
 firebase.auth().onAuthStateChanged(user => {
   showAuth();
   socket.emit('redirectToDetailsSuccessful', idOfFood);
-  var eatButton = document.createElement('button');
-  eatButton.innerHTML = "Eat";
+  var eatButton = document.getElementById('eatButton');
   eatButton.disabled = true;
-  eatButton.id = "eatButton";
   eatButton.style.display = 'inline-block';
   socket.on('eatReady', function() {
     document.getElementById('eatButton').disabled = false;
   })
   eatButton.onclick = function() {
     var originalColor = this.style.backgroundColor;
-    socket.emit('addToEatHistory', user.uid, idOfFood, nameOfFood, getDate());
+    socket.emit('addToEatHistory', user.uid, idOfFood, nameOfFood, formatAsDate());
     this.innerHTML = 'Added';
     this.style.backgroundColor = "rgb(42, 147, 55)";
     var changeTextPromise = wait(0.5);

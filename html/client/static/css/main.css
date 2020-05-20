@@ -567,3 +567,12 @@ img {
   padding: 4px;
   margin: 0px;
 }
+
+.date select {
+  margin-left: 10px;
+  margin-right: 20px;
+}
+
+.date {
+  color: black;
+}
